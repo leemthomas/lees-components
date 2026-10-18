@@ -12,7 +12,7 @@ import './globals.css'
 const openSans = Open_Sans({ subsets: ['latin'], weight: ['400', '600', '700', '800'], variable: '--font-open-sans', display: 'swap' })
 
 export const metadata: Metadata = {
-  title: { default: 'AQA Sanity Sandbox', template: '%s | AQA Sandbox' },
+  title: { default: "Lee's Components", template: "%s | Lee's Components" },
   robots: { index: false, follow: false },
 }
 

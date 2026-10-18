@@ -1,4 +1,4 @@
-// Seeds the sandbox with real-world AQA example content.
+// Seeds Lee's Components with real-world AQA example content.
 // Run from the repo root: npm run seed   (needs SANITY_WRITE_TOKEN in studio/.env)
 // Safe to re-run: documents use fixed IDs and are replaced, images are reused.
 
@@ -89,7 +89,7 @@ const richText = (blocks, extra = {}) => ({ _type: 'richText', _key: key(), body
 function documents(r) {
   const home = {
     _id: 'page-home', _type: 'page', title: 'Home', slug: { _type: 'slug', current: 'home' },
-    seo: { metaTitle: 'AQA Sanity Sandbox', metaDescription: 'Test homepage for the new AQA hero slider and page builder components.' },
+    seo: { metaTitle: "Lee's Components", metaDescription: 'Test homepage for the new AQA hero slider and page builder components.' },
     sections: [
       hero({
         ariaLabel: 'Featured on AQA',
@@ -290,7 +290,7 @@ function documents(r) {
 
   const settings = {
     _id: 'siteSettings', _type: 'siteSettings', title: 'AQA',
-    footerNote: 'AQA Sanity Sandbox. Test content for internal development only.',
+    footerNote: "Lee's Components. Test content for internal development only.",
     mainNav: [
       { _type: 'navItem', _key: key(), label: 'Home', link: internal('page-home') },
       { _type: 'navItem', _key: key(), label: 'Hero examples', link: internal('page-hero-examples') },

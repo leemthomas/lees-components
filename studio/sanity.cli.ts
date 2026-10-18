@@ -6,8 +6,8 @@ export default defineCliConfig({
     dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   },
   deployment: { autoUpdates: true },
-  // Hosted Studio: https://aqa-sandbox.sanity.studio (first deploy registers the hostname)
-  studioHost: 'aqa-sandbox',
+  // Hosted on Vercel at https://lees-components-studio.vercel.app.
+  // To use Sanity hosting instead, run `npx sanity deploy` (it asks for a hostname).
   typegen: {
     enabled: true,
     path: '../web/src/**/*.{ts,tsx}',

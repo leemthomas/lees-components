@@ -12,7 +12,7 @@ const previewOrigin = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost
 
 export default defineConfig({
   name: 'default',
-  title: 'AQA Sanity Sandbox',
+  title: "Lee's Components",
   projectId,
   dataset,
   plugins: [

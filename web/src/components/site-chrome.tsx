@@ -39,7 +39,7 @@ export function SiteFooter({ settings }: { settings: Settings }) {
   return (
     <footer className="site-footer">
       <div className="wrapper site-footer__inner">
-        <p>{settings?.footerNote || 'AQA Sanity Sandbox. Test content only.'}</p>
+        <p>{settings?.footerNote || "Lee's Components. Test content only."}</p>
         <p className="site-footer__owner">Owner: Lee Thomas</p>
       </div>
     </footer>

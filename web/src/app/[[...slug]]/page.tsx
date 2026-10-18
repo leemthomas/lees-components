@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data } = await sanityFetch({ query: PAGE_SEO_QUERY, params: { slug }, stega: false })
   if (!data) return {}
   return {
-    title: slug === 'home' ? { absolute: data.seo?.metaTitle || 'AQA Sanity Sandbox' } : data.seo?.metaTitle || data.title,
+    title: slug === 'home' ? { absolute: data.seo?.metaTitle || "Lee's Components" } : data.seo?.metaTitle || data.title,
     description: data.seo?.metaDescription,
   }
 }

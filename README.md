@@ -1,13 +1,13 @@
-# aqa-sanity-sandbox
+# Lee's Components
 
-A Sanity Studio and Next.js site for building and testing AQA page builder components before they go into aqa.org.uk. It starts with the new hero slider, plus the other homepage sections, all styled with the colours, type and pill buttons from aqa.org.uk.
+Repo: `lees-components`. A Sanity Studio and Next.js site for building and testing AQA page builder components before they go into aqa.org.uk. It starts with the new hero slider, plus the other homepage sections, all styled with the colours, type and pill buttons from aqa.org.uk.
 
 Owner: Lee Thomas
 
 ## What's here
 
 ```
-aqa-sanity-sandbox/
+lees-components/
 ├── studio/                 Sanity Studio (standalone, Vite)
 │   ├── schemaTypes/
 │   │   ├── documents/      page, siteSettings
@@ -28,10 +28,18 @@ aqa-sanity-sandbox/
 
 | | |
 | --- | --- |
-| Project | AQA Sanity Sandbox (`bf63zuwb`) |
+| Project | Lee's Components (`bf63zuwb`) |
 | Dataset | `production` (public read) |
-| CORS | `http://localhost:3000`, `http://localhost:3333` |
-| Hosted Studio | `https://aqa-sandbox.sanity.studio` once deployed (step 4) |
+| CORS | `http://localhost:3000`, `http://localhost:3333`, both Vercel URLs below |
+
+### Vercel (team: Lee Thomas' projects)
+
+| Project | Root directory | URL |
+| --- | --- | --- |
+| `lees-components` | `web` | https://lees-components.vercel.app |
+| `lees-components-studio` | `studio` | https://lees-components-studio.vercel.app |
+
+Both deploy from `main` on push. Environment variables are set in each project.
 
 ### Example content (already in the dataset)
 
@@ -45,12 +53,11 @@ Images are the public ones from aqa.org.uk, with their original alt text.
 
 Needs Node.js 22.12 or newer.
 
-### 1. Create the repo
+### 1. Clone
 
 ```bash
-# from the unzipped folder
-git init && git add -A && git commit -m "Initial sandbox"
-gh repo create aqa-sanity-sandbox --private --source=. --push
+git clone https://github.com/leemthomas/lees-components.git
+cd lees-components
 ```
 
 ### 2. Install
@@ -66,28 +73,21 @@ cp studio/.env.example studio/.env
 cp web/.env.example web/.env.local
 ```
 
-- `web/.env.local`: add a **Viewer** token as `SANITY_API_READ_TOKEN`. Create it at sanity.io/manage > AQA Sanity Sandbox > API > Tokens. It is needed for draft mode and the Presentation tool. Published content works without it.
+- `web/.env.local`: add a **Viewer** token as `SANITY_API_READ_TOKEN`. Create it at sanity.io/manage > Lee's Components > API > Tokens. It is needed for draft mode and the Presentation tool. Published content works without it.
 - `studio/.env`: only needed for `npm run seed`. Add an **Editor** token as `SANITY_WRITE_TOKEN`.
 
 Never commit either file. Both are in `.gitignore`.
 
-### 4. Log in, deploy the schema and the Studio
+### 4. Deploy the schema
 
 ```bash
 cd studio
 npx sanity login
 npx sanity schemas deploy   # lets MCP tools and the Content Lake see the schema
-npx sanity deploy           # hosts the Studio at https://aqa-sandbox.sanity.studio
 cd ..
 ```
 
-Then add the hosted Studio and the site URL to CORS:
-
-```bash
-cd studio
-npx sanity cors add https://aqa-sandbox.sanity.studio --credentials
-npx sanity cors add https://<your-vercel-url> --credentials
-```
+The Studio itself is hosted on Vercel (`lees-components-studio`), so there is no `sanity deploy` step. Pushing to `main` redeploys both apps.
 
 ### 5. Run it
 
@@ -100,9 +100,9 @@ npm run dev
 
 In the Studio, open **Presentation** to edit any page with the live site beside the form. Click any text on the page to jump to its field.
 
-### 6. Deploy the site (optional)
+### 6. Deploying
 
-On Vercel, import the repo and set **Root Directory** to `web`. Add the three `NEXT_PUBLIC_*` variables and `SANITY_API_READ_TOKEN`. Then set `SANITY_STUDIO_PREVIEW_URL` in `studio/.env` to the Vercel URL and run `npx sanity deploy` again so Presentation previews the hosted site.
+Push to `main`. Vercel builds `web` as **lees-components** and `studio` as **lees-components-studio**. If you add a custom domain, add it to the Sanity CORS origins (`npx sanity cors add https://your-domain --credentials`), to `frame-ancestors` in `web/next.config.ts`, and update `SANITY_STUDIO_PREVIEW_URL` / `NEXT_PUBLIC_SANITY_STUDIO_URL` in Vercel.
 
 ## Scripts (from the repo root)
 
@@ -113,7 +113,7 @@ On Vercel, import the repo and set **Root Directory** to `web`. Add the three `N
 | `npm run seed` | Recreates the example pages (safe to re-run, uses fixed IDs) |
 | `npm run typegen` | Extracts the schema and regenerates `web/sanity.types.ts` |
 | `npm run deploy:schema` | Deploys the schema to the Content Lake |
-| `npm run deploy:studio` | Deploys the hosted Studio |
+| `npm run deploy:studio` | Optional: deploys a Sanity-hosted Studio as well |
 
 ## AQA styling
 

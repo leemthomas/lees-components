@@ -7,7 +7,7 @@ export const SINGLETONS = ['siteSettings']
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('AQA sandbox')
+    .title("Lee's Components")
     .items([
       S.listItem()
         .title('Homepage')

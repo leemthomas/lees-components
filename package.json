@@ -1,7 +1,7 @@
 {
-  "name": "aqa-sanity-sandbox",
+  "name": "lees-components",
   "private": true,
-  "description": "Sanity Studio and Next.js sandbox for AQA page builder components, starting with the hero slider.",
+  "description": "Lee's Components: Sanity Studio and Next.js site for building and testing AQA page builder components, starting with the hero slider.",
   "workspaces": [
     "studio",
     "web"
