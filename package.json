@@ -1,0 +1,25 @@
+{
+  "name": "aqa-sanity-sandbox",
+  "private": true,
+  "description": "Sanity Studio and Next.js sandbox for AQA page builder components, starting with the hero slider.",
+  "workspaces": [
+    "studio",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n studio,web -c magenta,cyan \"npm run dev -w studio\" \"npm run dev -w web\"",
+    "dev:studio": "npm run dev -w studio",
+    "dev:web": "npm run dev -w web",
+    "build": "npm run build -w studio && npm run build -w web",
+    "seed": "npm run seed -w studio",
+    "deploy:studio": "npm run deploy -w studio",
+    "deploy:schema": "npm run deploy-schema -w studio",
+    "typegen": "npm run typegen -w studio"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
