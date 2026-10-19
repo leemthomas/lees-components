@@ -41,6 +41,8 @@ lees-components/
 
 Both deploy from `main` on push. Environment variables are set in each project.
 
+Open the Studio at https://lees-components-studio.vercel.app and log in with your Sanity account. Use **Presentation** to edit pages with the live site alongside.
+
 ### Example content (already in the dataset)
 
 - **Home** (`/`): four-slide hero (V Levels, Assessment reform hub, myAQA magazine, Digital exams), stats band, quick links, services cards, news cards and a "Switch to AQA" banner.
