@@ -343,14 +343,23 @@ function Slide({ slide: s, i, count, active, leaving, shouldLoad, embedsAllowed,
   useLayoutEffect(() => {
     const el = slideRef.current;
     const inner = el?.querySelector<HTMLElement>('.hs-inner');
-    if (!el || !inner) return;
-    const steps = [1, 0.88, 0.78, 0.7, 0.62];
+    const content = el?.querySelector<HTMLElement>('.hs-content');
+    if (!el || !inner || !content) return;
+    const steps = [1, 0.9, 0.82, 0.74, 0.66, 0.6];
+    // Compare the content block (card included) with the space left inside the
+    // padding, which already allows for the tabs strip and controls. Works for
+    // top, middle and bottom alignment alike.
+    const fits = () => {
+      const cs = getComputedStyle(inner);
+      const room = inner.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      return content.offsetHeight <= room + 1;
+    };
     const measure = () => {
       el.setAttribute('data-fitting', '');
       let chosen = steps[steps.length - 1];
       for (const f of steps) {
         el.style.setProperty('--hs-fit', String(f));
-        if (inner.scrollHeight <= inner.clientHeight + 1) { chosen = f; break; }
+        if (fits()) { chosen = f; break; }
       }
       el.style.setProperty('--hs-fit', String(chosen));
       el.removeAttribute('data-fitting');

@@ -30,6 +30,8 @@
      The tabs strip sits inside this height. */
   --hs-h: clamp(360px, 40vw, 500px);
   --hs-tabs-h: 0px;
+  /* Space kept clear at the bottom for the controls row (46px buttons + edge gap) */
+  --hs-pad-b: clamp(84px, 7.5vw, 104px);
   --hs-font-display: inherit;
   position: relative;
   isolation: isolate;
@@ -38,7 +40,8 @@
 .hs[data-height="compact"]  { --hs-h: clamp(300px, 30vw, 400px); }
 .hs[data-height="tall"],
 .hs[data-height="viewport"] { --hs-h: clamp(420px, 45vw, 500px); }
-.hs[data-nav="tabs"] { --hs-tabs-h: 56px; }
+.hs[data-nav="tabs"] { --hs-tabs-h: 56px; --hs-pad-b: calc(56px + clamp(24px, 3vw, 40px)); }
+.hs[data-nav="none"] { --hs-pad-b: clamp(84px, 7.5vw, 104px); }
 .hs[data-dir="prev"] { --hs-dir: -1; }
 
 /* ---------- Track: every slide sits in the same grid cell, so the
@@ -118,7 +121,7 @@
   position: relative;
   z-index: 2;
   display: grid;
-  padding-block: clamp(24px, 3.5vw, 48px) calc(var(--hs-tabs-h) + clamp(64px, 6vw, 84px));
+  padding-block: clamp(24px, 3.5vw, 48px) var(--hs-pad-b);
   padding-inline: var(--hs-gutter);
   align-content: end;
   justify-items: start;
@@ -146,7 +149,9 @@
 .hs-slide[data-layout="card"] .hs-content {
   background: var(--hs-card-bg, var(--hs-paper));
   color: var(--hs-card-fg, var(--hs-ink));
-  padding: clamp(20px, 2.4vw, 32px);
+  padding: clamp(18px, 2vw, 28px);
+  gap: clamp(6px, .8vw, 10px);
+  max-width: min(var(--hs-measure), 30rem);
   border-radius: var(--hs-radius);
   box-shadow: 0 24px 60px -24px rgb(0 0 0 / .45);
 }
@@ -165,7 +170,7 @@
 .hs-slide[data-layout="split-left"]  .hs-inner { grid-column: 1; grid-row: 1; }
 .hs-slide[data-layout="split-right"] .hs-media { grid-column: 1; grid-row: 1; }
 .hs-slide[data-layout="split-right"] .hs-inner { grid-column: 2; grid-row: 1; }
-.hs-slide[data-layout^="split"] .hs-inner { padding-block: clamp(24px, 3.5vw, 48px) calc(var(--hs-tabs-h) + clamp(64px, 6vw, 84px)); }
+.hs-slide[data-layout^="split"] .hs-inner { padding-block: clamp(24px, 3.5vw, 48px) var(--hs-pad-b); }
 /* diagonal edge on the media column */
 .hs-slide[data-layout="split-left"][data-edge="angle"]  .hs-media { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); margin-left: -8%; }
 .hs-slide[data-layout="split-right"][data-edge="angle"] .hs-media { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); margin-right: -8%; }
@@ -536,8 +541,15 @@
 
 /* Longer headings step down a size so the slide keeps its height */
 .hs-title[data-long="true"] { --hs-title-size: clamp(1.75rem, 3.4vw, 3rem); }
-.hs-slide[data-layout="card"] .hs-title,
 .hs-slide[data-layout^="split"] .hs-title { --hs-title-size: clamp(1.75rem, 3.2vw, 3rem); }
+/* Card: smaller type and spacing so it sits comfortably inside the 500px */
+.hs-slide[data-layout="card"] .hs-title { --hs-title-size: clamp(1.5rem, 2.3vw, 2.25rem); }
+.hs-slide[data-layout="card"] .hs-sub { font-size: calc(clamp(.95rem, 1.1vw, 1.0625rem) * max(var(--hs-fit, 1), .9)); }
+.hs-slide[data-layout="card"] .hs-actions { margin-top: 4px; }
+.hs-slide[data-layout="card"] .hs-eyebrow { font-size: .75rem; }
+/* Fit steps also tighten spacing, not just the heading */
+.hs-slide[data-fit] .hs-content { gap: 6px; }
+.hs-slide[data-fit] .hs-actions { margin-top: 2px; }
 .hs[data-height="compact"] .hs-title { --hs-title-size: clamp(1.75rem, 2.9vw, 2.75rem); }
 @media (max-width: 720px) {
   .hs .hs-title { --hs-title-size: 2rem; --hs-fit: 1; }
@@ -545,3 +557,8 @@
 }
 /* While a slide is being measured for fit, skip its entrance animation */
 .hs-slide[data-fitting] .hs-layer { animation: none !important; }
+
+/* Cards sit a little closer to the top edge to leave room above the tabs */
+@media (min-width: 721px) {
+  .hs-slide[data-layout="card"] .hs-inner { padding-top: clamp(20px, 3vw, 40px); }
+}
