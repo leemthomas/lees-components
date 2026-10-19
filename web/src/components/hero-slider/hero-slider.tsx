@@ -5,6 +5,7 @@ import {
   Fragment,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -197,6 +198,7 @@ export default function HeroSlider({ slides: input, options }: Props) {
       aria-roledescription="carousel"
       aria-label={o.ariaLabel}
       data-height={o.height}
+      data-nav={count > 1 ? o.navigation : 'none'}
       data-transition={transition}
       data-dir={dir}
       data-initial={String(!navigated)}
@@ -326,12 +328,40 @@ function Slide({ slide: s, i, count, active, leaving, shouldLoad, embedsAllowed,
   let layer = 0;
 
   const style = {
-    '--hs-measure': MEASURE[s.maxWidth ?? 'standard'],
+    '--hs-measure': layout === 'card' && (s.maxWidth ?? 'standard') === 'narrow' ? '30rem' : MEASURE[s.maxWidth ?? 'standard'],
     '--hs-split': layout === 'split-left' ? `${ratio}fr ${100 - ratio}fr` : `${100 - ratio}fr ${ratio}fr`,
     ...(s.panelColour ? { '--hs-panel': s.panelColour } : {}),
   } as CSSProperties;
 
   const inertProps = active ? {} : ({ inert: '' } as Record<string, string>);
+
+  // Fit to height: if the text is taller than the slide (long heading, narrow
+  // card, compact hero), step the heading down until it fits. Phones grow
+  // instead, so this only acts when the slide has a fixed height.
+  const slideRef = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState(1);
+  useLayoutEffect(() => {
+    const el = slideRef.current;
+    const inner = el?.querySelector<HTMLElement>('.hs-inner');
+    if (!el || !inner) return;
+    const steps = [1, 0.88, 0.78, 0.7, 0.62];
+    const measure = () => {
+      el.setAttribute('data-fitting', '');
+      let chosen = steps[steps.length - 1];
+      for (const f of steps) {
+        el.style.setProperty('--hs-fit', String(f));
+        if (inner.scrollHeight <= inner.clientHeight + 1) { chosen = f; break; }
+      }
+      el.style.setProperty('--hs-fit', String(chosen));
+      el.removeAttribute('data-fitting');
+      setFit(chosen);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [s.heading, s.subheading, s.layout, s.maxWidth]);
 
   return (
     <div
@@ -341,6 +371,8 @@ function Slide({ slide: s, i, count, active, leaving, shouldLoad, embedsAllowed,
       aria-label={`${i + 1} of ${count}: ${s.navLabel ?? plain(s.heading)}`}
       aria-hidden={!active}
       {...inertProps}
+      ref={slideRef}
+      data-fit={fit < 1 ? String(fit) : undefined}
       data-layout={layout}
       data-edge={s.splitEdge ?? 'straight'}
       data-pos={layout.startsWith('split') ? (s.position?.[0] ?? 'm') + 'l' : s.position ?? 'bl'}
@@ -361,7 +393,7 @@ function Slide({ slide: s, i, count, active, leaving, shouldLoad, embedsAllowed,
         <div className="hs-content">
           {s.badge && <span className="hs-badge hs-layer" style={{ '--i': layer++ } as CSSProperties}>{s.badge}</span>}
           {s.eyebrow && <span className="hs-eyebrow hs-layer" style={{ '--i': layer++ } as CSSProperties}>{s.eyebrow}</span>}
-          <Heading className="hs-title hs-layer" style={{ '--i': layer++ } as CSSProperties}>{highlight(s.heading)}</Heading>
+          <Heading className="hs-title hs-layer" data-long={plain(s.heading).length > 40 ? 'true' : undefined} style={{ '--i': layer++ } as CSSProperties}>{highlight(s.heading)}</Heading>
           {s.subheading && <p className="hs-sub hs-layer" style={{ '--i': layer++ } as CSSProperties}>{s.subheading}</p>}
           {!!s.buttons?.length && (
             <div className="hs-actions">

@@ -62,8 +62,8 @@ export const heroSlideType = defineType({
       name: 'heading',
       type: 'string',
       group: 'content',
-      description: 'Wrap words in *asterisks* to underline them in teal, e.g. "Futures *start here*".',
-      validation: (rule) => rule.required().max(90),
+      description: 'Wrap words in *asterisks* to underline them in teal, e.g. "Futures *start here*". Over 40 characters uses a smaller size.',
+      validation: (rule) => [rule.required().max(90), rule.max(60).warning('Long headings may not fit in the 500px hero. Aim for under 60 characters.')],
     }),
     defineField({ name: 'subheading', title: 'Intro', type: 'text', rows: 2, group: 'content', validation: (rule) => rule.max(180) }),
     defineField({

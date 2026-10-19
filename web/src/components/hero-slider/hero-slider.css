@@ -26,15 +26,19 @@
   --hs-layer-delay: 280ms;
   --hs-ease: cubic-bezier(.22, .8, .24, 1);
   --hs-dir: 1;
-  --hs-min-h: clamp(440px, 50vw, 620px);
+  /* Height follows aqa.org.uk (480px at 1440, ~413px at 1024), capped at 500px.
+     The tabs strip sits inside this height. */
+  --hs-h: clamp(360px, 40vw, 500px);
+  --hs-tabs-h: 0px;
   --hs-font-display: inherit;
   position: relative;
   isolation: isolate;
   color: var(--hs-paper);
 }
-.hs[data-height="compact"]  { --hs-min-h: clamp(340px, 38vw, 480px); }
-.hs[data-height="tall"]     { --hs-min-h: clamp(540px, 66vw, 800px); }
-.hs[data-height="viewport"] { --hs-min-h: min(calc(100svh - var(--hs-offset, 0px)), 960px); }
+.hs[data-height="compact"]  { --hs-h: clamp(300px, 30vw, 400px); }
+.hs[data-height="tall"],
+.hs[data-height="viewport"] { --hs-h: clamp(420px, 45vw, 500px); }
+.hs[data-nav="tabs"] { --hs-tabs-h: 56px; }
 .hs[data-dir="prev"] { --hs-dir: -1; }
 
 /* ---------- Track: every slide sits in the same grid cell, so the
@@ -49,7 +53,7 @@
 .hs-slide {
   grid-area: 1 / 1;
   position: relative;
-  min-height: var(--hs-min-h);
+  height: var(--hs-h);
   display: grid;
   visibility: hidden;
   z-index: 0;
@@ -114,14 +118,14 @@
   position: relative;
   z-index: 2;
   display: grid;
-  padding-block: clamp(32px, 6vw, 88px) clamp(72px, 8vw, 112px);
+  padding-block: clamp(24px, 3.5vw, 48px) calc(var(--hs-tabs-h) + clamp(64px, 6vw, 84px));
   padding-inline: var(--hs-gutter);
   align-content: end;
   justify-items: start;
 }
 .hs-content {
   display: grid;
-  gap: clamp(10px, 1.2vw, 16px);
+  gap: clamp(8px, 1vw, 14px);
   max-width: var(--hs-measure);
   min-width: 0;
 }
@@ -142,7 +146,7 @@
 .hs-slide[data-layout="card"] .hs-content {
   background: var(--hs-card-bg, var(--hs-paper));
   color: var(--hs-card-fg, var(--hs-ink));
-  padding: clamp(22px, 3vw, 40px);
+  padding: clamp(20px, 2.4vw, 32px);
   border-radius: var(--hs-radius);
   box-shadow: 0 24px 60px -24px rgb(0 0 0 / .45);
 }
@@ -161,7 +165,7 @@
 .hs-slide[data-layout="split-left"]  .hs-inner { grid-column: 1; grid-row: 1; }
 .hs-slide[data-layout="split-right"] .hs-media { grid-column: 1; grid-row: 1; }
 .hs-slide[data-layout="split-right"] .hs-inner { grid-column: 2; grid-row: 1; }
-.hs-slide[data-layout^="split"] .hs-inner { padding-block: clamp(32px, 5vw, 72px) clamp(84px, 8vw, 112px); }
+.hs-slide[data-layout^="split"] .hs-inner { padding-block: clamp(24px, 3.5vw, 48px) calc(var(--hs-tabs-h) + clamp(64px, 6vw, 84px)); }
 /* diagonal edge on the media column */
 .hs-slide[data-layout="split-left"][data-edge="angle"]  .hs-media { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); margin-left: -8%; }
 .hs-slide[data-layout="split-right"][data-edge="angle"] .hs-media { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); margin-right: -8%; }
@@ -189,10 +193,11 @@
 .hs-title {
   margin: 0;
   font-family: var(--hs-font-display);
-  font-size: clamp(2.1rem, 4.4vw, 4.25rem);
-  line-height: 1.02;
-  letter-spacing: -.015em;
-  font-weight: 700;
+  /* aqa.org.uk h1: 64px / 48px / 32px, semibold */
+  font-size: calc(var(--hs-title-size, clamp(2rem, 4.45vw, 4rem)) * var(--hs-fit, 1));
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  font-weight: 600;
   text-wrap: balance;
 }
 .hs-hl {
@@ -203,8 +208,8 @@
 .hs-slide.is-active .hs-hl { animation: hs-hl 900ms var(--hs-ease) both; animation-delay: calc(var(--hs-layer-delay) + 6 * var(--hs-stagger)); }
 .hs-sub {
   margin: 0;
-  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-  line-height: 1.45;
+  font-size: calc(clamp(1rem, 1.3vw, 1.25rem) * max(var(--hs-fit, 1), .9));
+  line-height: 1.5;
   max-width: 34em;
   text-wrap: pretty;
   opacity: .92;
@@ -320,19 +325,32 @@
 .hs-count { font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: .04em; display: flex; gap: 8px; align-items: baseline; }
 .hs-count b { font-size: 1.5rem; }
 
-/* tabs strip under the hero */
+/* tabs strip: sits along the bottom, inside the hero's height */
 .hs-tabs {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hs-tabs-h);
   display: grid;
   grid-template-columns: repeat(var(--hs-count, 4), minmax(0, 1fr));
-  background: var(--hs-tabs-bg, var(--hs-brand));
+  padding-right: var(--hs-tabs-controls, 0px);
+  background: color-mix(in srgb, var(--hs-tabs-bg, var(--hs-brand)) 94%, transparent);
   color: var(--hs-paper);
 }
+/* with tabs, arrows and pause share the strip on the right */
+.hs[data-nav="tabs"] { --hs-tabs-controls: 168px; }
+.hs[data-nav="tabs"] .hs-controls { height: var(--hs-tabs-h); padding: 0 16px 0 0; justify-content: flex-end; color: var(--hs-paper); }
+.hs[data-nav="tabs"] .hs-controls .hs-icon-btn { width: 40px; height: 40px; background: color-mix(in srgb, #fff 14%, transparent); }
+.hs[data-nav="tabs"] .hs-controls .hs-icon-btn:hover { background: color-mix(in srgb, #fff 26%, transparent); }
 .hs-tab {
   position: relative;
   display: grid;
   gap: 2px;
   text-align: left;
-  padding: 16px clamp(12px, 2vw, 24px) 18px;
+  align-content: center;
+  padding: 0 clamp(12px, 2vw, 24px);
   border: 0;
   border-right: 1px solid color-mix(in srgb, currentColor 18%, transparent);
   background: transparent;
@@ -347,8 +365,8 @@
 .hs-tab:hover { opacity: 1; background: color-mix(in srgb, currentColor 6%, transparent); }
 .hs-tab[aria-current="true"] { opacity: 1; }
 .hs-tab small { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .75; font-variant-numeric: tabular-nums; }
-.hs-tab span { font-weight: 600; font-size: .95rem; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.hs-tab .hs-track { position: absolute; left: 0; right: 0; top: 0; height: 4px; background: color-mix(in srgb, currentColor 15%, transparent); }
+.hs-tab span { font-weight: 600; font-size: .95rem; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hs-tab .hs-track { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: color-mix(in srgb, currentColor 15%, transparent); }
 .hs-tab .hs-fill { position: absolute; inset: 0; background: var(--hs-accent); transform-origin: left; transform: scaleX(0); }
 .hs-tab[aria-current="true"] .hs-fill { transform: scaleX(1); }
 
@@ -476,29 +494,32 @@
 
 /* ---------- Small screens ---------- */
 @media (max-width: 720px) {
-  .hs { --hs-min-h: clamp(460px, 120vw, 620px); }
-  .hs[data-height="compact"] { --hs-min-h: 420px; }
-  .hs-slide[data-mpos^="t"] .hs-inner { align-content: start; }
-  .hs-slide[data-mpos^="m"] .hs-inner { align-content: center; }
-  .hs-slide[data-mpos^="b"] .hs-inner { align-content: end; }
+  /* Phones follow aqa.org.uk: image on top, text on a brand panel below.
+     Height comes from the content, so nothing is ever cropped. */
+  .hs { --hs-tabs-h: 0px; --hs-img-h: 62.5vw; }
+  .hs-slide { height: auto; grid-template-columns: 1fr !important; grid-template-rows: auto 1fr; background: var(--hs-panel, var(--hs-brand)); }
+  .hs-slide .hs-media { position: relative; inset: auto; grid-column: 1 !important; grid-row: 1 !important; height: var(--hs-img-h); min-height: 0; margin: 0 !important; clip-path: none !important; }
+  .hs-slide .hs-inner { grid-column: 1 !important; grid-row: 2 !important; align-content: start !important; padding-block: 24px 32px; color: var(--hs-paper); }
+  .hs-slide[data-layout="card"] .hs-content { background: none; color: inherit; padding: 0; box-shadow: none; border-radius: 0; }
+  .hs-slide[data-layout="card"] .hs-btn[data-style="secondary"],
+  .hs-slide[data-tone="dark"] .hs-btn[data-style="secondary"] { color: #fff; }
+  .hs-slide[data-layout="card"] .hs-btn[data-style="text"],
+  .hs-slide[data-tone="dark"] .hs-btn[data-style="text"] { color: #fff; }
   .hs-slide[data-mpos$="l"] .hs-inner { justify-items: start; text-align: left; }
   .hs-slide[data-mpos$="c"] .hs-inner { justify-items: center; text-align: center; }
+  .hs-slide[data-mpos$="c"] .hs-actions { justify-content: center; }
+  .hs-slide[data-mpos$="c"] .hs-eyebrow, .hs-slide[data-mpos$="c"] .hs-badge { justify-self: center; }
   .hs-slide[data-mpos$="l"] .hs-actions { justify-content: flex-start; }
   .hs-slide[data-mpos$="l"] .hs-eyebrow, .hs-slide[data-mpos$="l"] .hs-badge { justify-self: start; }
 
-  /* split stacks: image on top, content panel below */
-  .hs-slide[data-layout^="split"] { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  .hs-slide[data-layout^="split"] .hs-media { grid-column: 1 !important; grid-row: 1 !important; aspect-ratio: 16 / 10; min-height: 0; margin: 0 !important; clip-path: none !important; }
-  .hs-slide[data-layout^="split"] .hs-inner { grid-column: 1 !important; grid-row: 2 !important; align-content: start; }
-
-  .hs-inner { padding-bottom: 88px; }
-  .hs-slide[data-layout="card"] .hs-inner { padding-inline: 16px; }
+  /* Controls sit on the bottom edge of the image */
+  .hs-controls { top: calc(var(--hs-img-h) - 56px); bottom: auto; height: 56px; padding: 0 16px; color: var(--hs-paper) !important; align-items: center; }
   .hs-btn { flex: 1 1 auto; justify-content: center; }
   .hs-btn[data-style="text"], .hs-btn[data-style="play"] { flex: 0 0 auto; }
-  .hs-tabs { grid-template-columns: 1fr; }
+  .hs-tabs { position: static; grid-template-columns: 1fr; padding-right: 0; background: var(--hs-tabs-bg, var(--hs-brand)); border-top: 1px solid color-mix(in srgb, #fff 18%, transparent); }
   .hs-tab:not([aria-current="true"]) { display: none; }
   .hs-thumbs { display: none; }
-  .hs-icon-btn { width: 42px; height: 42px; }
+  .hs-icon-btn { width: 40px; height: 40px; }
 }
 
 /* ---------- Reduced motion: quick fades only, nothing moves ---------- */
@@ -512,3 +533,15 @@
 
 /* Contained: sits inside the page grid as a rounded panel */
 .hs--contained { border-radius: 12px; overflow: hidden; }
+
+/* Longer headings step down a size so the slide keeps its height */
+.hs-title[data-long="true"] { --hs-title-size: clamp(1.75rem, 3.4vw, 3rem); }
+.hs-slide[data-layout="card"] .hs-title,
+.hs-slide[data-layout^="split"] .hs-title { --hs-title-size: clamp(1.75rem, 3.2vw, 3rem); }
+.hs[data-height="compact"] .hs-title { --hs-title-size: clamp(1.75rem, 2.9vw, 2.75rem); }
+@media (max-width: 720px) {
+  .hs .hs-title { --hs-title-size: 2rem; --hs-fit: 1; }
+  .hs .hs-title[data-long="true"] { --hs-title-size: 1.75rem; }
+}
+/* While a slide is being measured for fit, skip its entrance animation */
+.hs-slide[data-fitting] .hs-layer { animation: none !important; }

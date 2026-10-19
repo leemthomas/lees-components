@@ -58,12 +58,12 @@ export const heroSliderType = defineType({
       type: 'string',
       group: 'behaviour',
       initialValue: 'standard',
+      description: 'Desktop height. The hero never goes above 500px, tabs included. On phones it grows to fit the text.',
       options: {
         list: [
-          { title: 'Compact', value: 'compact' },
-          { title: 'Standard', value: 'standard' },
-          { title: 'Tall', value: 'tall' },
-          { title: 'Full screen', value: 'viewport' },
+          { title: 'Compact (up to 400px)', value: 'compact' },
+          { title: 'Standard, as aqa.org.uk (up to 500px)', value: 'standard' },
+          { title: 'Tall (420 to 500px)', value: 'tall' },
         ],
         layout: 'radio',
         direction: 'horizontal',
