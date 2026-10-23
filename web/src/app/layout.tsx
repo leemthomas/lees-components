@@ -10,7 +10,7 @@ import { DisableDraftMode } from '@/components/disable-draft-mode'
 import './globals.css'
 
 // AQA uses Open Sans across aqa.org.uk
-const openSans = Open_Sans({ subsets: ['latin'], weight: ['400', '600', '700', '800'], variable: '--font-open-sans', display: 'swap' })
+const openSans = Open_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-open-sans', display: 'swap' })
 
 export const metadata: Metadata = {
   title: { default: "Lee's Components", template: "%s | Lee's Components" },
