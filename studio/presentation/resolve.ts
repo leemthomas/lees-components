@@ -16,5 +16,11 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         locations: [{ title: doc?.title || 'Untitled', href: pathFor(doc?.slug) }],
       }),
     }),
+    // The mega menu is in the header of every page
+    navigation: defineLocations({
+      message: 'Shown in the header of every page',
+      tone: 'positive',
+      locations: [{ title: 'Homepage', href: '/' }],
+    }),
   },
 }

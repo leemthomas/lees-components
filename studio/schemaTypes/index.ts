@@ -3,6 +3,7 @@ import { siteSettingsType } from './documents/site-settings'
 import { linkType } from './objects/link'
 import { buttonType } from './objects/button'
 import { seoType } from './objects/seo'
+import { megaMenuTypes } from './navigation/mega-menu'
 import { heroSlideType } from './blocks/hero-slide'
 import { heroSliderType } from './blocks/hero-slider'
 import { cardGridType, ctaBannerType, quickLinksType, richTextType, statsBandType } from './blocks/other-blocks'
@@ -11,6 +12,8 @@ export const schemaTypes = [
   // documents
   pageType,
   siteSettingsType,
+  // mega menu (navigation singleton and its objects)
+  ...megaMenuTypes,
   // objects
   linkType,
   buttonType,

@@ -11,6 +11,7 @@ lees-components/
 ├── studio/                 Sanity Studio (standalone, Vite)
 │   ├── schemaTypes/
 │   │   ├── documents/      page, siteSettings
+│   │   ├── navigation/     mega menu (navigation singleton, menus, columns, links, featured cards)
 │   │   ├── objects/        link, button, seo
 │   │   ├── blocks/         heroSlider, heroSlide, statsBand, quickLinks, cardGrid, ctaBanner, richText
 │   │   └── shared/         option lists and the shared "Section" fields
@@ -50,6 +51,22 @@ Open the Studio at https://lees-components-studio.vercel.app and log in with you
 - **V Levels** (`/v-levels`): a single-slide page banner followed by normal sections.
 
 Images are the public ones from aqa.org.uk, with their original alt text.
+
+## Mega menu
+
+The site header is a Sanity-driven mega menu that replaces the aqa.org.uk one. Edit it in the Studio under **Mega menu**.
+
+- **Menus:** each top-level item opens a panel. A panel has an optional intro, a "View all" link, columns of links, up to two featured cards and a bottom bar of bold links. A menu can also be a plain link with no panel.
+- **Columns:** "Compact" (small icon and label) or "Detailed" (icon tile, label and a description line). A column can be up to 4 wide, and long lists such as all subjects flow across the extra width.
+- **Links:** label, link, icon, a code or tag (e.g. 8461), a New / Updated / Popular badge and extra search keywords.
+- **Icons:** pick from the solid icon set with the picker. The set lives in `web/src/lib/menu-icons.tsx` and a copy in `studio/components/menu-icons.tsx`; keep them identical (`npm run icons:check`).
+- **Featured cards:** image, purple, teal or light, with eyebrow, heading, text and a link.
+- **Filter box:** tick "Show a filter box" on long panels to narrow the links as you type.
+- **Search:** the magnifier (or `/`, or Ctrl/Cmd+K) opens live search across every menu link, code and keyword, plus pages on this site via `/api/search`. It allows one-letter typos. Enter goes to the full aqa.org.uk search.
+
+Behaviour: panels open on hover after a short pause and stay open while the pointer moves into them, open on click or tap, and work from the keyboard (arrow keys between items, down arrow into a panel, Esc to close and return focus). Below 1024px the menu becomes a drawer with search and accordions.
+
+Files: `web/src/components/mega-menu/`, schema in `studio/schemaTypes/navigation/mega-menu.ts`, content in `studio/seed/navigation.mjs`.
 
 ## Setup
 

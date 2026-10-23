@@ -4,6 +4,7 @@
 
 import { createClient } from '@sanity/client'
 import { randomUUID } from 'node:crypto'
+import { navigationDoc } from './navigation.mjs'
 
 const client = createClient({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'bf63zuwb',
@@ -299,7 +300,7 @@ function documents(r) {
     ],
   }
 
-  return [vLevels, examples, home, settings]
+  return [vLevels, examples, home, settings, navigationDoc(r)]
 }
 
 console.log('Uploading images…')

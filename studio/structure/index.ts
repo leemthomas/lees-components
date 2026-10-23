@@ -2,8 +2,9 @@ import type { StructureResolver } from 'sanity/structure'
 import { CogIcon } from '@sanity/icons/Cog'
 import { DocumentsIcon } from '@sanity/icons/Documents'
 import { HomeIcon } from '@sanity/icons/Home'
+import { MenuIcon } from '@sanity/icons/Menu'
 
-export const SINGLETONS = ['siteSettings']
+export const SINGLETONS = ['siteSettings', 'navigation']
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -18,6 +19,10 @@ export const structure: StructureResolver = (S) =>
         .icon(DocumentsIcon)
         .child(S.documentTypeList('page').title('Pages').defaultOrdering([{ field: 'title', direction: 'asc' }])),
       S.divider(),
+      S.listItem()
+        .title('Mega menu')
+        .icon(MenuIcon)
+        .child(S.document().schemaType('navigation').documentId('navigation').title('Mega menu')),
       S.listItem()
         .title('Site settings')
         .icon(CogIcon)

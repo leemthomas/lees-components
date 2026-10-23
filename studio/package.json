@@ -12,7 +12,9 @@
     "typegen": "sanity schemas extract --force && sanity typegen generate"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@sanity/icons": "^5.2.3",
+    "@sanity/ui": "^4.4.9",
     "@sanity/vision": "^6.19.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

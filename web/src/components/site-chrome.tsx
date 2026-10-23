@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { isInternal, resolveHref, type LinkValue } from '@/lib/links'
+import { MegaMenu } from './mega-menu/mega-menu'
+import type { Navigation } from './mega-menu/types'
 
 type Settings = {
   title?: string | null
@@ -13,7 +15,15 @@ function NavLink({ label, link }: { label?: string | null; link?: LinkValue }) {
   return isInternal(href) ? <Link href={href}>{label}</Link> : <a href={href}>{label}</a>
 }
 
-export function SiteHeader({ settings }: { settings: Settings }) {
+export function SiteHeader({ settings, navigation }: { settings: Settings; navigation?: Navigation | null }) {
+  // The mega menu takes over once a "Mega menu" document exists in the Studio.
+  // The sandbox pages from Site settings move into its "Sandbox" dropdown.
+  if (navigation?.menus?.length) {
+    const sandboxLinks = (settings?.mainNav ?? [])
+      .map((n) => ({ key: n._key, label: n.label ?? '', href: resolveHref(n.link) ?? '' }))
+      .filter((n) => n.label && n.href)
+    return <MegaMenu nav={navigation} sandboxLinks={sandboxLinks} />
+  }
   return (
     <header className="site-header">
       <a href="#main" className="skip-link">Skip to main content</a>

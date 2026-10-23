@@ -55,7 +55,7 @@ export type PosterMobile = {
 
 export type CardImage = {
   asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "image.media" in schema
+  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   alt?: string;
@@ -169,7 +169,7 @@ export type HeroSlider = {
   autoplay?: boolean;
   interval?: number;
   speed?: 500 | 700 | 900 | 1200;
-  height?: "compact" | "standard" | "tall" | "viewport";
+  height?: "compact" | "standard" | "tall";
   navigation?: "tabs" | "dots" | "numbers" | "thumbs" | "none";
   arrows?: boolean;
   progressBar?: boolean;
@@ -295,6 +295,131 @@ export type Link = {
   openInNewTab?: boolean;
 };
 
+export type Navigation = {
+  _id: string;
+  _type: "navigation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  menus?: Array<
+    {
+      _key: string;
+    } & MegaMenu
+  >;
+  strapline?: string;
+  utilityLinks?: Array<
+    {
+      _key: string;
+    } & TextLink
+  >;
+  loginLink?: TextLink;
+  search?: {
+    enabled?: boolean;
+    placeholder?: string;
+    resultsUrl?: string;
+    popular?: Array<string>;
+    suggested?: Array<
+      {
+        _key: string;
+      } & TextLink
+    >;
+    includePages?: boolean;
+  };
+};
+
+export type TextLink = {
+  _type: "textLink";
+  label?: string;
+  link?: Link;
+};
+
+export type MegaMenu = {
+  _type: "megaMenu";
+  label?: string;
+  kind?: "panel" | "link";
+  link?: Link;
+  linkLabel?: string;
+  intro?: string;
+  columns?: Array<
+    {
+      _key: string;
+    } & MegaMenuColumn
+  >;
+  quickLinks?: Array<
+    {
+      _key: string;
+    } & TextLink
+  >;
+  featured?: Array<
+    {
+      _key: string;
+    } & MegaMenuFeature
+  >;
+  showFilter?: boolean;
+  filterPlaceholder?: string;
+};
+
+export type MegaMenuFeature = {
+  _type: "megaMenuFeature";
+  style?: "image" | "purple" | "teal" | "light";
+  eyebrow?: string;
+  heading?: string;
+  text?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  icon?: MenuIcon;
+  cta?: TextLink;
+};
+
+export type MenuIcon = string;
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type MegaMenuColumn = {
+  _type: "megaMenuColumn";
+  heading?: string;
+  headingLink?: Link;
+  style?: "compact" | "detailed";
+  span?: 1 | 2 | 3 | 4;
+  links?: Array<
+    {
+      _key: string;
+    } & MegaMenuLink
+  >;
+  footerLink?: TextLink;
+};
+
+export type MegaMenuLink = {
+  _type: "megaMenuLink";
+  label?: string;
+  link?: Link;
+  icon?: MenuIcon;
+  tag?: string;
+  description?: string;
+  badge?: "new" | "updated" | "popular";
+  keywords?: Array<string>;
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -340,22 +465,6 @@ export type Page = {
       } & RichText)
   >;
   seo?: Seo;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Slug = {
@@ -479,10 +588,17 @@ export type AllSanitySchemaTypes =
   | Button
   | PageReference
   | Link
-  | SiteSettings
-  | Page
+  | Navigation
+  | TextLink
+  | MegaMenu
+  | MegaMenuFeature
+  | MenuIcon
   | SanityImageCrop
   | SanityImageHotspot
+  | MegaMenuColumn
+  | MegaMenuLink
+  | SiteSettings
+  | Page
   | Slug
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -497,6 +613,11 @@ export type AllSanitySchemaTypes =
 // Variable: SETTINGS_QUERY
 // Query: *[_id == "siteSettings"][0]{  title,  footerNote,  mainNav[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }}
 export type SETTINGS_QUERY_RESULT =
+  | {
+      title: null;
+      footerNote: null;
+      mainNav: null;
+    }
   | {
       title: string | null;
       footerNote: null;
@@ -517,6 +638,155 @@ export type SETTINGS_QUERY_RESULT =
       }> | null;
     }
   | null;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: NAVIGATION_QUERY
+// Query: *[_id == "navigation"][0]{  strapline,  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },  menus[]{    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder,    link{ linkType, external, openInNewTab, "slug": internal->slug.current },    columns[]{      _key, heading, style, span,      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      links[]{ _key, label, icon, tag, description, badge, keywords, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },    featured[]{      _key, style, eyebrow, heading, text, icon,      image{ ..., "lqip": asset->metadata.lqip },      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    }  }}
+export type NAVIGATION_QUERY_RESULT =
+  | {
+      strapline: null;
+      utilityLinks: null;
+      loginLink: null;
+      search: null;
+      menus: null;
+    }
+  | {
+      strapline: string | null;
+      utilityLinks: Array<{
+        _key: string;
+        label: string | null;
+        link: {
+          linkType: "external" | "internal" | null;
+          external: string | null;
+          openInNewTab: boolean | null;
+          slug: string | null;
+        } | null;
+      }> | null;
+      loginLink: {
+        label: string | null;
+        link: {
+          linkType: "external" | "internal" | null;
+          external: string | null;
+          openInNewTab: boolean | null;
+          slug: string | null;
+        } | null;
+      } | null;
+      search: {
+        enabled: boolean | null;
+        placeholder: string | null;
+        resultsUrl: string | null;
+        popular: Array<string> | null;
+        includePages: boolean | null;
+        suggested: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+      } | null;
+      menus: Array<{
+        _key: string;
+        label: string | null;
+        kind: "link" | "panel" | null;
+        linkLabel: string | null;
+        intro: string | null;
+        showFilter: boolean | null;
+        filterPlaceholder: string | null;
+        link: {
+          linkType: "external" | "internal" | null;
+          external: string | null;
+          openInNewTab: boolean | null;
+          slug: string | null;
+        } | null;
+        columns: Array<{
+          _key: string;
+          heading: string | null;
+          style: "compact" | "detailed" | null;
+          span: 1 | 2 | 3 | 4 | null;
+          headingLink: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+          footerLink: {
+            label: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          } | null;
+          links: Array<{
+            _key: string;
+            label: string | null;
+            icon: MenuIcon | null;
+            tag: string | null;
+            description: string | null;
+            badge: "new" | "popular" | "updated" | null;
+            keywords: Array<string> | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+        }> | null;
+        quickLinks: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        featured: Array<{
+          _key: string;
+          style: "image" | "light" | "purple" | "teal" | null;
+          eyebrow: string | null;
+          heading: string | null;
+          text: string | null;
+          icon: MenuIcon | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+          } | null;
+          cta: {
+            label: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          } | null;
+        }> | null;
+      }> | null;
+    }
+  | null;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: PAGE_SEARCH_QUERY
+// Query: *[_type == "page" && defined(slug.current) && (title match $terms || seo.metaDescription match $terms)]  | score(boost(title match $terms, 3), seo.metaDescription match $terms)  | order(_score desc)[0...6]{ _id, title, "slug": slug.current, "description": seo.metaDescription }
+export type PAGE_SEARCH_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
+}>;
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_SLUGS_QUERY
@@ -549,7 +819,7 @@ export type PAGE_QUERY_RESULT = {
         cards: Array<{
           image: {
             asset?: SanityImageAssetReference;
-            media?: unknown; // Unable to locate the referenced type "image.media" in schema
+            media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
             hotspot?: SanityImageHotspot;
             crop?: SanityImageCrop;
             alt?: string;
@@ -706,7 +976,7 @@ export type PAGE_QUERY_RESULT = {
         autoplay?: boolean;
         interval?: number;
         speed?: 1200 | 500 | 700 | 900;
-        height?: "compact" | "standard" | "tall" | "viewport";
+        height?: "compact" | "standard" | "tall";
         navigation?: "dots" | "none" | "numbers" | "tabs" | "thumbs";
         arrows?: boolean;
         progressBar?: boolean;
@@ -782,6 +1052,8 @@ export type PAGE_QUERY_RESULT = {
 declare global {
   interface SanityQueries {
     '*[_id == "siteSettings"][0]{\n  title,\n  footerNote,\n  mainNav[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n}': SETTINGS_QUERY_RESULT;
+    '*[_id == "navigation"][0]{\n  strapline,\n  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n  menus[]{\n    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder,\n    link{ linkType, external, openInNewTab, "slug": internal->slug.current },\n    columns[]{\n      _key, heading, style, span,\n      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },\n      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      links[]{ _key, label, icon, tag, description, badge, keywords, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n    featured[]{\n      _key, style, eyebrow, heading, text, icon,\n      image{ ..., "lqip": asset->metadata.lqip },\n      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': NAVIGATION_QUERY_RESULT;
+    '*[_type == "page" && defined(slug.current) && (title match $terms || seo.metaDescription match $terms)]\n  | score(boost(title match $terms, 3), seo.metaDescription match $terms)\n  | order(_score desc)[0...6]{ _id, title, "slug": slug.current, "description": seo.metaDescription }': PAGE_SEARCH_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)].slug.current': PAGE_SLUGS_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{ title, seo }': PAGE_SEO_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  sections[]{\n    ...,\n    _type == "heroSlider" => {\n      "slides": slides[\n        (!defined(publishFrom) || publishFrom <= now()) &&\n        (!defined(publishUntil) || publishUntil > now())\n      ]{\n        ...,\n        "mp4": videoFile.asset->url,\n        image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        poster{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n      }\n    },\n    _type == "cardGrid" => {\n      cards[]{ ..., image{ ..., "lqip": asset->metadata.lqip }, button{ label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }\n    },\n    _type == "ctaBanner" => {\n      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "quickLinks" => {\n      links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': PAGE_QUERY_RESULT;

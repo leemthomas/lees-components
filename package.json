@@ -14,7 +14,8 @@
     "seed": "npm run seed -w studio",
     "deploy:studio": "npm run deploy -w studio",
     "deploy:schema": "npm run deploy-schema -w studio",
-    "typegen": "npm run typegen -w studio"
+    "typegen": "npm run typegen -w studio",
+    "icons:check": "cmp web/src/lib/menu-icons.tsx studio/components/menu-icons.tsx && echo Icon sets match"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
