@@ -5,15 +5,7 @@ import { LinkIcon } from '@sanity/icons/Link'
 import { StarIcon } from '@sanity/icons/Star'
 import { SearchIcon } from '@sanity/icons/Search'
 import { ListIcon } from '@sanity/icons/List'
-import { IconPickerInput, iconMedia } from '../../components/icon-picker-input'
-
-/* ---------- Icon: a string chosen from the shared icon set ---------- */
-export const menuIconType = defineType({
-  name: 'menuIcon',
-  title: 'Icon',
-  type: 'string',
-  components: { input: IconPickerInput },
-})
+import { ArrowRightIcon } from '@sanity/icons/ArrowRight'
 
 /* ---------- A plain label + link, used for footers and utility links ---------- */
 export const textLinkType = defineType({
@@ -28,6 +20,29 @@ export const textLinkType = defineType({
   preview: { select: { title: 'label', url: 'link.external', slug: 'link.internal.slug.current' }, prepare: ({ title, url, slug }) => ({ title, subtitle: url || (slug ? `/${slug}` : '') }) },
 })
 
+/* ---------- A link in a sub-menu (shown when its parent is selected) ---------- */
+export const megaMenuSubLinkType = defineType({
+  name: 'megaMenuSubLink',
+  title: 'Sub-menu link',
+  type: 'object',
+  icon: ArrowRightIcon,
+  fields: [
+    defineField({ name: 'label', type: 'string', validation: (rule) => rule.required().max(70) }),
+    defineField({ name: 'link', type: 'link', validation: (rule) => rule.required() }),
+    defineField({ name: 'tag', title: 'Code or tag', type: 'string', description: 'e.g. 8461', validation: (rule) => rule.max(12) }),
+    defineField({
+      name: 'group',
+      type: 'string',
+      description: 'Links with the same group sit together under it as a small heading, e.g. "GCSE" or "AS and A-level".',
+      validation: (rule) => rule.max(30),
+    }),
+  ],
+  preview: {
+    select: { title: 'label', tag: 'tag', group: 'group' },
+    prepare: ({ title, tag, group }) => ({ title: [title, tag && `(${tag})`].filter(Boolean).join(' '), subtitle: group, media: ArrowRightIcon }),
+  },
+})
+
 /* ---------- One link inside a column ---------- */
 export const megaMenuLinkType = defineType({
   name: 'megaMenuLink',
@@ -37,7 +52,6 @@ export const megaMenuLinkType = defineType({
   fields: [
     defineField({ name: 'label', type: 'string', validation: (rule) => rule.required().max(60) }),
     defineField({ name: 'link', type: 'link', validation: (rule) => rule.required() }),
-    defineField({ name: 'icon', type: 'menuIcon' }),
     defineField({
       name: 'tag',
       title: 'Code or tag',
@@ -71,13 +85,29 @@ export const megaMenuLinkType = defineType({
       options: { layout: 'tags' },
       description: 'Extra words people might search for, e.g. "timetable" for Key dates.',
     }),
+    defineField({
+      name: 'children',
+      title: 'Sub-menu',
+      type: 'array',
+      of: [defineArrayMember({ type: 'megaMenuSubLink' })],
+      description: 'Optional. Pointing at (or tapping) this link shows these in a side panel, for a second level of links.',
+      validation: (rule) => rule.max(30),
+    }),
+    defineField({
+      name: 'childrenIntro',
+      title: 'Sub-menu intro',
+      type: 'string',
+      description: 'One line shown at the top of the sub-menu.',
+      hidden: ({ parent }) => !parent?.children?.length,
+      validation: (rule) => rule.max(120),
+    }),
   ],
   preview: {
-    select: { title: 'label', tag: 'tag', description: 'description', icon: 'icon', badge: 'badge' },
-    prepare: ({ title, tag, description, icon, badge }) => ({
+    select: { title: 'label', tag: 'tag', description: 'description', badge: 'badge', children: 'children' },
+    prepare: ({ title, tag, description, badge, children }) => ({
       title: [title, tag && `(${tag})`].filter(Boolean).join(' '),
-      subtitle: [badge && badge.toUpperCase(), description].filter(Boolean).join(' · '),
-      media: iconMedia(icon) ?? LinkIcon,
+      subtitle: [badge && badge.toUpperCase(), children?.length ? `${children.length} sub-menu links` : null, description].filter(Boolean).join(' · '),
+      media: LinkIcon,
     }),
   },
 })
@@ -85,11 +115,11 @@ export const megaMenuLinkType = defineType({
 /* ---------- A column of links with an optional heading ---------- */
 export const megaMenuColumnType = defineType({
   name: 'megaMenuColumn',
-  title: 'Column',
+  title: 'Section',
   type: 'object',
   icon: ListIcon,
   fields: [
-    defineField({ name: 'heading', type: 'string', validation: (rule) => rule.max(40) }),
+    defineField({ name: 'heading', type: 'string', description: 'The section title, e.g. "Sciences". Sections flow into columns with a divider between each column.', validation: (rule) => rule.max(40) }),
     defineField({ name: 'headingLink', title: 'Heading links to', type: 'link', description: 'Optional. Makes the heading a link.' }),
     defineField({
       name: 'style',
@@ -97,28 +127,20 @@ export const megaMenuColumnType = defineType({
       initialValue: 'compact',
       options: {
         list: [
-          { title: 'Compact: label and small icon', value: 'compact' },
-          { title: 'Detailed: icon tile, label and description', value: 'detailed' },
+          { title: 'Compact: one line per link', value: 'compact' },
+          { title: 'Detailed: label with a description line', value: 'detailed' },
         ],
         layout: 'radio',
       },
-    }),
-    defineField({
-      name: 'span',
-      title: 'Width',
-      type: 'number',
-      initialValue: 1,
-      description: 'How many grid columns this takes. Long lists (like all subjects) flow across the extra width.',
-      options: { list: [1, 2, 3, 4], layout: 'radio', direction: 'horizontal' },
     }),
     defineField({ name: 'links', type: 'array', of: [defineArrayMember({ type: 'megaMenuLink' })], validation: (rule) => rule.min(1).max(40) }),
     defineField({ name: 'footerLink', title: 'Footer link', type: 'textLink', description: 'Bold "See all" link under the list.' }),
   ],
   preview: {
-    select: { title: 'heading', links: 'links', span: 'span', style: 'style' },
-    prepare: ({ title, links, span, style }) => ({
-      title: title || 'Column (no heading)',
-      subtitle: `${links?.length ?? 0} links · ${style === 'detailed' ? 'Detailed' : 'Compact'} · width ${span ?? 1}`,
+    select: { title: 'heading', links: 'links', style: 'style' },
+    prepare: ({ title, links, style }) => ({
+      title: title || 'Section (no heading)',
+      subtitle: `${links?.length ?? 0} links · ${style === 'detailed' ? 'Detailed' : 'Compact'}`,
       media: ListIcon,
     }),
   },
@@ -156,7 +178,6 @@ export const megaMenuFeatureType = defineType({
       hidden: ({ parent }) => parent?.style !== 'image',
       fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string', description: 'Leave blank if the image is decorative.' })],
     }),
-    defineField({ name: 'icon', type: 'menuIcon', hidden: ({ parent }) => parent?.style === 'image' }),
     defineField({ name: 'cta', title: 'Link', type: 'textLink' }),
   ],
   preview: {
@@ -222,20 +243,25 @@ export const megaMenuType = defineType({
     }),
     defineField({
       name: 'columns',
+      title: 'Sections',
       type: 'array',
       group: 'links',
       of: [defineArrayMember({ type: 'megaMenuColumn' })],
+      description: 'Each section has a title and a list of links. Sections flow down into columns, with a divider between columns.',
       hidden: ({ parent }) => parent?.kind === 'link',
       validation: (rule) =>
-        rule.custom((cols: Array<{ span?: number }> | undefined, { parent }) => {
-          if ((parent as { kind?: string })?.kind === 'link') return true
-          if (!cols?.length) return 'Add at least one column'
-          const total = cols.reduce((n, c) => n + (c.span ?? 1), 0)
-          const max = (parent as { featured?: unknown[] })?.featured?.length ? 3 : 4
-          return total > max
-            ? { message: `The columns are ${total} wide. With${max === 3 ? ' a featured card' : 'out a featured card'} the panel fits ${max} before wrapping onto a new row.`, level: 'warning' } as never
-            : true
-        }),
+        rule.custom((cols: unknown[] | undefined, { parent }) =>
+          (parent as { kind?: string })?.kind !== 'link' && !cols?.length ? 'Add at least one section' : true,
+        ),
+    }),
+    defineField({
+      name: 'columnCount',
+      title: 'Number of columns',
+      type: 'number',
+      group: 'settings',
+      description: 'Leave blank to fit automatically (up to 3 next to a featured or sub-menu area, otherwise 4).',
+      options: { list: [1, 2, 3, 4], layout: 'radio', direction: 'horizontal' },
+      hidden: ({ parent }) => parent?.kind === 'link',
     }),
     defineField({
       name: 'quickLinks',
@@ -280,7 +306,7 @@ export const megaMenuType = defineType({
       const links = (columns as Array<{ links?: unknown[] }> | undefined)?.reduce((n, c) => n + (c.links?.length ?? 0), 0) ?? 0
       return {
         title,
-        subtitle: kind === 'link' ? 'Plain link' : `${columns?.length ?? 0} columns · ${links} links${featured?.length ? ` · ${featured.length} featured` : ''}`,
+        subtitle: kind === 'link' ? 'Plain link' : `${columns?.length ?? 0} sections · ${links} links${featured?.length ? ` · ${featured.length} featured` : ''}`,
         media: ThLargeIcon,
       }
     },
@@ -340,4 +366,4 @@ export const navigationType = defineType({
   preview: { prepare: () => ({ title: 'Mega menu' }) },
 })
 
-export const megaMenuTypes = [menuIconType, textLinkType, megaMenuLinkType, megaMenuColumnType, megaMenuFeatureType, megaMenuType, navigationType]
+export const megaMenuTypes = [textLinkType, megaMenuSubLinkType, megaMenuLinkType, megaMenuColumnType, megaMenuFeatureType, megaMenuType, navigationType]

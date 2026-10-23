@@ -2,15 +2,14 @@
 
 import { stegaClean } from 'next-sanity'
 import { useEffect, useId, useMemo, useRef, useState, type RefObject } from 'react'
-import { ArrowRightIcon, ArrowUpRightIcon, FileTextIcon, MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react'
+import { ArrowRightIcon, ArrowUpRightIcon, MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react'
 import { resolveHref } from '@/lib/links'
 import { MenuAnchor } from './menu-anchor'
-import { MENU_ICONS } from '@/lib/menu-icons'
 import { buildIndex, highlight, searchIndex } from './search-index'
 import type { Navigation } from './types'
 
 type PageHit = { id: string; title: string; href: string; description?: string | null }
-type Option = { key: string; label: string; href: string; newTab: boolean; kind: 'menu' | 'page' | 'all'; icon?: string; tag?: string; meta?: string }
+type Option = { key: string; label: string; href: string; newTab: boolean; kind: 'menu' | 'page' | 'all'; tag?: string; meta?: string }
 
 export function MenuSearch({
   nav,
@@ -66,7 +65,7 @@ export function MenuSearch({
     if (!q) return []
     const menuHrefs = new Set(menuHits.map((h) => h.href))
     return [
-      ...menuHits.map((h) => ({ key: `m-${h.id}`, label: h.label, href: h.href, newTab: h.newTab, kind: 'menu' as const, icon: h.icon, tag: h.tag, meta: h.trail })),
+      ...menuHits.map((h) => ({ key: `m-${h.id}`, label: h.label, href: h.href, newTab: h.newTab, kind: 'menu' as const, tag: h.tag, meta: h.trail })),
       ...pages
         .filter((p) => !menuHrefs.has(p.href))
         .map((p) => ({ key: `p-${p.id}`, label: p.title, href: p.href, newTab: false, kind: 'page' as const, meta: p.description ?? 'Page on this site' })),
@@ -109,8 +108,6 @@ export function MenuSearch({
 
   const renderOption = (o: Option) => {
     const i = indexOf(o)
-    const def = o.icon ? MENU_ICONS[o.icon] : undefined
-    const Icon = o.kind === 'page' ? FileTextIcon : o.kind === 'all' ? MagnifyingGlassIcon : def?.icon
     const external = o.newTab || o.kind === 'all'
     return (
       <MenuAnchor
@@ -126,7 +123,7 @@ export function MenuSearch({
         onMouseMove={() => setActive(i)}
         onClick={onNavigate}
       >
-        <span className="mm-tile mm-tile--sm" aria-hidden="true">{Icon ? <Icon weight="fill" /> : <ArrowRightIcon weight="bold" />}</span>
+        {o.kind === 'all' && <MagnifyingGlassIcon className="mm-result__icon" weight="bold" aria-hidden="true" />}
         <span className="mm-result__text">
           <span className="mm-result__label">
             <span>{o.kind === 'all' ? o.label : highlight(o.label, q).map((p, k) => (p.hit ? <mark key={k}>{p.text}</mark> : <span key={k}>{p.text}</span>))}</span>

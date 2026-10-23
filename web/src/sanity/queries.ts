@@ -16,17 +16,20 @@ export const NAVIGATION_QUERY = defineQuery(`*[_id == "navigation"][0]{
   loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
   search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },
   menus[]{
-    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder,
+    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder, columnCount,
     link{ linkType, external, openInNewTab, "slug": internal->slug.current },
     columns[]{
-      _key, heading, style, span,
+      _key, heading, style,
       headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },
       footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
-      links[]{ _key, label, icon, tag, description, badge, keywords, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+      links[]{
+        _key, label, tag, description, badge, keywords, childrenIntro, link{ linkType, external, openInNewTab, "slug": internal->slug.current },
+        children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+      }
     },
     quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
     featured[]{
-      _key, style, eyebrow, heading, text, icon,
+      _key, style, eyebrow, heading, text,
       image{ ..., "lqip": asset->metadata.lqip },
       cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
     }

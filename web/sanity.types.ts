@@ -345,6 +345,7 @@ export type MegaMenu = {
       _key: string;
     } & MegaMenuColumn
   >;
+  columnCount?: 1 | 2 | 3 | 4;
   quickLinks?: Array<
     {
       _key: string;
@@ -373,11 +374,8 @@ export type MegaMenuFeature = {
     alt?: string;
     _type: "image";
   };
-  icon?: MenuIcon;
   cta?: TextLink;
 };
-
-export type MenuIcon = string;
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
@@ -400,7 +398,6 @@ export type MegaMenuColumn = {
   heading?: string;
   headingLink?: Link;
   style?: "compact" | "detailed";
-  span?: 1 | 2 | 3 | 4;
   links?: Array<
     {
       _key: string;
@@ -413,11 +410,24 @@ export type MegaMenuLink = {
   _type: "megaMenuLink";
   label?: string;
   link?: Link;
-  icon?: MenuIcon;
   tag?: string;
   description?: string;
   badge?: "new" | "updated" | "popular";
   keywords?: Array<string>;
+  children?: Array<
+    {
+      _key: string;
+    } & MegaMenuSubLink
+  >;
+  childrenIntro?: string;
+};
+
+export type MegaMenuSubLink = {
+  _type: "megaMenuSubLink";
+  label?: string;
+  link?: Link;
+  tag?: string;
+  group?: string;
 };
 
 export type SiteSettings = {
@@ -592,11 +602,11 @@ export type AllSanitySchemaTypes =
   | TextLink
   | MegaMenu
   | MegaMenuFeature
-  | MenuIcon
   | SanityImageCrop
   | SanityImageHotspot
   | MegaMenuColumn
   | MegaMenuLink
+  | MegaMenuSubLink
   | SiteSettings
   | Page
   | Slug
@@ -641,7 +651,7 @@ export type SETTINGS_QUERY_RESULT =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: NAVIGATION_QUERY
-// Query: *[_id == "navigation"][0]{  strapline,  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },  menus[]{    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder,    link{ linkType, external, openInNewTab, "slug": internal->slug.current },    columns[]{      _key, heading, style, span,      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      links[]{ _key, label, icon, tag, description, badge, keywords, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },    featured[]{      _key, style, eyebrow, heading, text, icon,      image{ ..., "lqip": asset->metadata.lqip },      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    }  }}
+// Query: *[_id == "navigation"][0]{  strapline,  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },  menus[]{    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder, columnCount,    link{ linkType, external, openInNewTab, "slug": internal->slug.current },    columns[]{      _key, heading, style,      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      links[]{        _key, label, tag, description, badge, keywords, childrenIntro, link{ linkType, external, openInNewTab, "slug": internal->slug.current },        children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }      }    },    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },    featured[]{      _key, style, eyebrow, heading, text,      image{ ..., "lqip": asset->metadata.lqip },      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    }  }}
 export type NAVIGATION_QUERY_RESULT =
   | {
       strapline: null;
@@ -696,6 +706,7 @@ export type NAVIGATION_QUERY_RESULT =
         intro: string | null;
         showFilter: boolean | null;
         filterPlaceholder: string | null;
+        columnCount: 1 | 2 | 3 | 4 | null;
         link: {
           linkType: "external" | "internal" | null;
           external: string | null;
@@ -706,7 +717,6 @@ export type NAVIGATION_QUERY_RESULT =
           _key: string;
           heading: string | null;
           style: "compact" | "detailed" | null;
-          span: 1 | 2 | 3 | 4 | null;
           headingLink: {
             linkType: "external" | "internal" | null;
             external: string | null;
@@ -725,17 +735,29 @@ export type NAVIGATION_QUERY_RESULT =
           links: Array<{
             _key: string;
             label: string | null;
-            icon: MenuIcon | null;
             tag: string | null;
             description: string | null;
             badge: "new" | "popular" | "updated" | null;
             keywords: Array<string> | null;
+            childrenIntro: string | null;
             link: {
               linkType: "external" | "internal" | null;
               external: string | null;
               openInNewTab: boolean | null;
               slug: string | null;
             } | null;
+            children: Array<{
+              _key: string;
+              label: string | null;
+              tag: string | null;
+              group: string | null;
+              link: {
+                linkType: "external" | "internal" | null;
+                external: string | null;
+                openInNewTab: boolean | null;
+                slug: string | null;
+              } | null;
+            }> | null;
           }> | null;
         }> | null;
         quickLinks: Array<{
@@ -754,7 +776,6 @@ export type NAVIGATION_QUERY_RESULT =
           eyebrow: string | null;
           heading: string | null;
           text: string | null;
-          icon: MenuIcon | null;
           image: {
             asset?: SanityImageAssetReference;
             media?: unknown;
@@ -1052,7 +1073,7 @@ export type PAGE_QUERY_RESULT = {
 declare global {
   interface SanityQueries {
     '*[_id == "siteSettings"][0]{\n  title,\n  footerNote,\n  mainNav[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n}': SETTINGS_QUERY_RESULT;
-    '*[_id == "navigation"][0]{\n  strapline,\n  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n  menus[]{\n    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder,\n    link{ linkType, external, openInNewTab, "slug": internal->slug.current },\n    columns[]{\n      _key, heading, style, span,\n      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },\n      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      links[]{ _key, label, icon, tag, description, badge, keywords, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n    featured[]{\n      _key, style, eyebrow, heading, text, icon,\n      image{ ..., "lqip": asset->metadata.lqip },\n      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': NAVIGATION_QUERY_RESULT;
+    '*[_id == "navigation"][0]{\n  strapline,\n  utilityLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  loginLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n  search{ enabled, placeholder, resultsUrl, popular, includePages, suggested[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n  menus[]{\n    _key, label, kind, linkLabel, intro, showFilter, filterPlaceholder, columnCount,\n    link{ linkType, external, openInNewTab, "slug": internal->slug.current },\n    columns[]{\n      _key, heading, style,\n      headingLink{ linkType, external, openInNewTab, "slug": internal->slug.current },\n      footerLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      links[]{\n        _key, label, tag, description, badge, keywords, childrenIntro, link{ linkType, external, openInNewTab, "slug": internal->slug.current },\n        children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n      }\n    },\n    quickLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n    featured[]{\n      _key, style, eyebrow, heading, text,\n      image{ ..., "lqip": asset->metadata.lqip },\n      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': NAVIGATION_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current) && (title match $terms || seo.metaDescription match $terms)]\n  | score(boost(title match $terms, 3), seo.metaDescription match $terms)\n  | order(_score desc)[0...6]{ _id, title, "slug": slug.current, "description": seo.metaDescription }': PAGE_SEARCH_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)].slug.current': PAGE_SLUGS_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{ title, seo }': PAGE_SEO_QUERY_RESULT;

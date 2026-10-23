@@ -1,0 +1,765 @@
+{
+ "accounting": [
+  {
+   "label": "A-level Accounting",
+   "tag": "7127",
+   "path": "/subjects/accounting/a-level/accounting-7127"
+  }
+ ],
+ "art-and-design": [
+  {
+   "label": "GCSE Art and Design (Art, craft and design)",
+   "tag": "8201",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8201"
+  },
+  {
+   "label": "GCSE Art and Design (Fine art)",
+   "tag": "8202",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8202"
+  },
+  {
+   "label": "GCSE Art and Design (Graphic communication)",
+   "tag": "8203",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8203"
+  },
+  {
+   "label": "GCSE Art and Design (Textile design)",
+   "tag": "8204",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8204"
+  },
+  {
+   "label": "GCSE Art and Design (Three-dimensional design)",
+   "tag": "8205",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8205"
+  },
+  {
+   "label": "GCSE Art and Design (Photography)",
+   "tag": "8206",
+   "path": "/subjects/art-and-design/gcse/art-and-design-8206"
+  },
+  {
+   "label": "A-level Art and Design (Art, craft and design)",
+   "tag": "7201",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7201"
+  },
+  {
+   "label": "A-level Art and Design (Fine art)",
+   "tag": "7202",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7202"
+  },
+  {
+   "label": "A-level Art and Design (Graphic communication)",
+   "tag": "7203",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7203"
+  },
+  {
+   "label": "A-level Art and Design (Textile design)",
+   "tag": "7204",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7204"
+  },
+  {
+   "label": "A-level Art and Design (Three-dimensional design)",
+   "tag": "7205",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7205"
+  },
+  {
+   "label": "A-level Art and Design (Photography)",
+   "tag": "7206",
+   "path": "/subjects/art-and-design/a-level/art-and-design-7206"
+  }
+ ],
+ "biology": [
+  {
+   "label": "GCSE Biology",
+   "tag": "8461",
+   "path": "/subjects/biology/gcse/biology-8461"
+  },
+  {
+   "label": "AS Biology",
+   "tag": "7401",
+   "path": "/subjects/biology/as-level/biology-7401"
+  },
+  {
+   "label": "A-level Biology",
+   "tag": "7402",
+   "path": "/subjects/biology/a-level/biology-7402"
+  }
+ ],
+ "business": [
+  {
+   "label": "GCSE Business",
+   "tag": "8132",
+   "path": "/subjects/business/gcse/business-8132"
+  },
+  {
+   "label": "AS Business",
+   "tag": "7131",
+   "path": "/subjects/business/as-level/business-7131"
+  },
+  {
+   "label": "AS Business (New)",
+   "tag": "7137",
+   "path": "/subjects/business/as-level/business-7137"
+  },
+  {
+   "label": "A-level Business",
+   "tag": "7132",
+   "path": "/subjects/business/a-level/business-7132"
+  },
+  {
+   "label": "A-level Business (New)",
+   "tag": "7138",
+   "path": "/subjects/business/a-level/business-7138"
+  },
+  {
+   "label": "Applied General Business",
+   "tag": "1830",
+   "path": "/subjects/business/applied-general/business-1830"
+  }
+ ],
+ "chemistry": [
+  {
+   "label": "GCSE Chemistry",
+   "tag": "8462",
+   "path": "/subjects/chemistry/gcse/chemistry-8462"
+  },
+  {
+   "label": "AS Chemistry",
+   "tag": "7404",
+   "path": "/subjects/chemistry/as-level/chemistry-7404"
+  },
+  {
+   "label": "A-level Chemistry",
+   "tag": "7405",
+   "path": "/subjects/chemistry/a-level/chemistry-7405"
+  }
+ ],
+ "computer-science": [
+  {
+   "label": "GCSE Computer Science",
+   "tag": "8525",
+   "path": "/subjects/computer-science/gcse/computer-science-8525"
+  },
+  {
+   "label": "AS Computer Science",
+   "tag": "7516",
+   "path": "/subjects/computer-science/as-level/computer-science-7516"
+  },
+  {
+   "label": "A-level Computer Science",
+   "tag": "7517",
+   "path": "/subjects/computer-science/a-level/computer-science-7517"
+  }
+ ],
+ "dance": [
+  {
+   "label": "GCSE Dance",
+   "tag": "8236",
+   "path": "/subjects/dance/gcse/dance-8236"
+  },
+  {
+   "label": "A-level Dance",
+   "tag": "7237",
+   "path": "/subjects/dance/a-level/dance-7237"
+  }
+ ],
+ "design-and-technology": [
+  {
+   "label": "GCSE Design and Technology",
+   "tag": "8552",
+   "path": "/subjects/design-and-technology/gcse/design-and-technology-8552"
+  },
+  {
+   "label": "A-level Design and Technology",
+   "tag": "7552",
+   "path": "/subjects/design-and-technology/a-level/design-and-technology-7552"
+  },
+  {
+   "label": "A-level Design and Technology",
+   "tag": "7562",
+   "path": "/subjects/design-and-technology/a-level/design-and-technology-7562"
+  }
+ ],
+ "drama": [
+  {
+   "label": "GCSE Drama",
+   "tag": "8261",
+   "path": "/subjects/drama/gcse/drama-8261"
+  },
+  {
+   "label": "A-level Drama",
+   "tag": "7262",
+   "path": "/subjects/drama/a-level/drama-7262"
+  }
+ ],
+ "economics": [
+  {
+   "label": "GCSE Economics",
+   "tag": "8136",
+   "path": "/subjects/economics/gcse/economics-8136"
+  },
+  {
+   "label": "AS Economics",
+   "tag": "7135",
+   "path": "/subjects/economics/as-level/economics-7135"
+  },
+  {
+   "label": "A-level Economics",
+   "tag": "7136",
+   "path": "/subjects/economics/a-level/economics-7136"
+  }
+ ],
+ "english": [
+  {
+   "label": "GCSE English Language",
+   "tag": "8700",
+   "path": "/subjects/english/gcse/english-8700"
+  },
+  {
+   "label": "GCSE English Literature",
+   "tag": "8702",
+   "path": "/subjects/english/gcse/english-8702"
+  },
+  {
+   "label": "AS English Language",
+   "tag": "7701",
+   "path": "/subjects/english/as-level/english-7701"
+  },
+  {
+   "label": "AS English Literature A",
+   "tag": "7711",
+   "path": "/subjects/english/as-level/english-7711"
+  },
+  {
+   "label": "AS English Literature B",
+   "tag": "7716",
+   "path": "/subjects/english/as-level/english-7716"
+  },
+  {
+   "label": "A-level English Language",
+   "tag": "7702",
+   "path": "/subjects/english/a-level/english-7702"
+  },
+  {
+   "label": "A-level English Language and Literature",
+   "tag": "7707",
+   "path": "/subjects/english/a-level/english-7707"
+  },
+  {
+   "label": "A-level English Literature A",
+   "tag": "7712",
+   "path": "/subjects/english/a-level/english-7712"
+  },
+  {
+   "label": "A-level English Literature B",
+   "tag": "7717",
+   "path": "/subjects/english/a-level/english-7717"
+  },
+  {
+   "label": "ELC English",
+   "tag": "5970",
+   "path": "/subjects/english/elc/english-5970"
+  },
+  {
+   "label": "Functional Skills English",
+   "tag": "8720",
+   "path": "/subjects/english/functional-skills/english-8720"
+  },
+  {
+   "label": "Functional Skills English",
+   "tag": "8725",
+   "path": "/subjects/english/functional-skills/english-8725"
+  }
+ ],
+ "food-preparation-and-nutrition": [
+  {
+   "label": "GCSE Food preparation and nutrition",
+   "tag": "8585",
+   "path": "/subjects/food-preparation-and-nutrition/gcse/food-preparation-and-nutrition-8585"
+  }
+ ],
+ "french": [
+  {
+   "label": "GCSE French",
+   "tag": "8652",
+   "path": "/subjects/french/gcse/french-8652"
+  },
+  {
+   "label": "AS French",
+   "tag": "7651",
+   "path": "/subjects/french/as-level/french-7651"
+  },
+  {
+   "label": "A-level French",
+   "tag": "7652",
+   "path": "/subjects/french/a-level/french-7652"
+  },
+  {
+   "label": "FCSE French",
+   "tag": "8958",
+   "path": "/subjects/french/fcse/french-8958"
+  }
+ ],
+ "geography": [
+  {
+   "label": "GCSE Geography",
+   "tag": "8035",
+   "path": "/subjects/geography/gcse/geography-8035"
+  },
+  {
+   "label": "AS Geography",
+   "tag": "7036",
+   "path": "/subjects/geography/as-level/geography-7036"
+  },
+  {
+   "label": "A-level Geography",
+   "tag": "7037",
+   "path": "/subjects/geography/a-level/geography-7037"
+  }
+ ],
+ "german": [
+  {
+   "label": "GCSE German",
+   "tag": "8662",
+   "path": "/subjects/german/gcse/german-8662"
+  },
+  {
+   "label": "AS German",
+   "tag": "7661",
+   "path": "/subjects/german/as-level/german-7661"
+  },
+  {
+   "label": "A-level German",
+   "tag": "7662",
+   "path": "/subjects/german/a-level/german-7662"
+  },
+  {
+   "label": "FCSE German",
+   "tag": "8968",
+   "path": "/subjects/german/fcse/german-8968"
+  }
+ ],
+ "history": [
+  {
+   "label": "GCSE History",
+   "tag": "8145",
+   "path": "/subjects/history/gcse/history-8145"
+  },
+  {
+   "label": "AS History",
+   "tag": "7041",
+   "path": "/subjects/history/as-level/history-7041"
+  },
+  {
+   "label": "A-level History",
+   "tag": "7042",
+   "path": "/subjects/history/a-level/history-7042"
+  }
+ ],
+ "languages": [
+  {
+   "label": "GCSE Italian",
+   "tag": "8633",
+   "path": "/subjects/languages/gcse/languages-8633"
+  },
+  {
+   "label": "GCSE Bengali",
+   "tag": "8638",
+   "path": "/subjects/languages/gcse/languages-8638"
+  },
+  {
+   "label": "GCSE Urdu",
+   "tag": "8648",
+   "path": "/subjects/languages/gcse/languages-8648"
+  },
+  {
+   "label": "GCSE French",
+   "tag": "8652",
+   "path": "/subjects/languages/gcse/languages-8652"
+  },
+  {
+   "label": "GCSE German",
+   "tag": "8662",
+   "path": "/subjects/languages/gcse/languages-8662"
+  },
+  {
+   "label": "GCSE Chinese (Mandarin)",
+   "tag": "8673",
+   "path": "/subjects/languages/gcse/languages-8673"
+  },
+  {
+   "label": "GCSE Hebrew (Modern)",
+   "tag": "8678",
+   "path": "/subjects/languages/gcse/languages-8678"
+  },
+  {
+   "label": "GCSE Panjabi",
+   "tag": "8683",
+   "path": "/subjects/languages/gcse/languages-8683"
+  },
+  {
+   "label": "GCSE Polish",
+   "tag": "8688",
+   "path": "/subjects/languages/gcse/languages-8688"
+  },
+  {
+   "label": "GCSE Spanish",
+   "tag": "8692",
+   "path": "/subjects/languages/gcse/languages-8692"
+  },
+  {
+   "label": "AS French",
+   "tag": "7651",
+   "path": "/subjects/languages/as-level/languages-7651"
+  },
+  {
+   "label": "AS German",
+   "tag": "7661",
+   "path": "/subjects/languages/as-level/languages-7661"
+  },
+  {
+   "label": "AS Spanish",
+   "tag": "7691",
+   "path": "/subjects/languages/as-level/languages-7691"
+  },
+  {
+   "label": "A-level Bengali",
+   "tag": "7637",
+   "path": "/subjects/languages/a-level/languages-7637"
+  },
+  {
+   "label": "A-level French",
+   "tag": "7652",
+   "path": "/subjects/languages/a-level/languages-7652"
+  },
+  {
+   "label": "A-level German",
+   "tag": "7662",
+   "path": "/subjects/languages/a-level/languages-7662"
+  },
+  {
+   "label": "A-level Hebrew (Modern)",
+   "tag": "7672",
+   "path": "/subjects/languages/a-level/languages-7672"
+  },
+  {
+   "label": "A-level Hebrew (Biblical)",
+   "tag": "7677",
+   "path": "/subjects/languages/a-level/languages-7677"
+  },
+  {
+   "label": "A-level Panjabi",
+   "tag": "7682",
+   "path": "/subjects/languages/a-level/languages-7682"
+  },
+  {
+   "label": "A-level Polish",
+   "tag": "7687",
+   "path": "/subjects/languages/a-level/languages-7687"
+  },
+  {
+   "label": "A-level Spanish",
+   "tag": "7692",
+   "path": "/subjects/languages/a-level/languages-7692"
+  },
+  {
+   "label": "FCSE French",
+   "tag": "8958",
+   "path": "/subjects/languages/fcse/languages-8958"
+  },
+  {
+   "label": "FCSE German",
+   "tag": "8968",
+   "path": "/subjects/languages/fcse/languages-8968"
+  },
+  {
+   "label": "FCSE Chinese (Mandarin)",
+   "tag": "8973",
+   "path": "/subjects/languages/fcse/languages-8973"
+  },
+  {
+   "label": "FCSE Spanish",
+   "tag": "8998",
+   "path": "/subjects/languages/fcse/languages-8998"
+  }
+ ],
+ "law": [
+  {
+   "label": "A-level Law",
+   "tag": "7162",
+   "path": "/subjects/law/a-level/law-7162"
+  }
+ ],
+ "mathematics": [
+  {
+   "label": "GCSE Mathematics",
+   "tag": "8300",
+   "path": "/subjects/mathematics/gcse/mathematics-8300"
+  },
+  {
+   "label": "GCSE Statistics",
+   "tag": "8382",
+   "path": "/subjects/mathematics/gcse/mathematics-8382"
+  },
+  {
+   "label": "AS Mathematics",
+   "tag": "7356",
+   "path": "/subjects/mathematics/as-level/mathematics-7356"
+  },
+  {
+   "label": "AS Further Mathematics",
+   "tag": "7366",
+   "path": "/subjects/mathematics/as-level/mathematics-7366"
+  },
+  {
+   "label": "A-level Mathematics",
+   "tag": "7357",
+   "path": "/subjects/mathematics/a-level/mathematics-7357"
+  },
+  {
+   "label": "A-level Further Mathematics",
+   "tag": "7367",
+   "path": "/subjects/mathematics/a-level/mathematics-7367"
+  },
+  {
+   "label": "AQA Certificate Level 3 Mathematical Studies",
+   "tag": "1350",
+   "path": "/subjects/mathematics/level-three/mathematics-1350"
+  },
+  {
+   "label": "ELC Mathematics",
+   "tag": "5930",
+   "path": "/subjects/mathematics/elc/mathematics-5930"
+  },
+  {
+   "label": "Functional Skills Mathematics",
+   "tag": "8361",
+   "path": "/subjects/mathematics/functional-skills/mathematics-8361"
+  },
+  {
+   "label": "Functional Skills Mathematics",
+   "tag": "8362",
+   "path": "/subjects/mathematics/functional-skills/mathematics-8362"
+  },
+  {
+   "label": "AQA Certificate Level 2 Further Mathematics",
+   "tag": "8365",
+   "path": "/subjects/mathematics/aqa-certificate/mathematics-8365"
+  }
+ ],
+ "media-studies": [
+  {
+   "label": "GCSE Media Studies",
+   "tag": "8572",
+   "path": "/subjects/media-studies/gcse/media-studies-8572"
+  },
+  {
+   "label": "A-level Media Studies",
+   "tag": "7572",
+   "path": "/subjects/media-studies/a-level/media-studies-7572"
+  }
+ ],
+ "music": [
+  {
+   "label": "GCSE Music",
+   "tag": "8271",
+   "path": "/subjects/music/gcse/music-8271"
+  },
+  {
+   "label": "A-level Music",
+   "tag": "7272",
+   "path": "/subjects/music/a-level/music-7272"
+  }
+ ],
+ "physical-education": [
+  {
+   "label": "GCSE Physical Education",
+   "tag": "8582",
+   "path": "/subjects/physical-education/gcse/physical-education-8582"
+  },
+  {
+   "label": "A-level Physical Education",
+   "tag": "7582",
+   "path": "/subjects/physical-education/a-level/physical-education-7582"
+  }
+ ],
+ "physics": [
+  {
+   "label": "GCSE Physics",
+   "tag": "8463",
+   "path": "/subjects/physics/gcse/physics-8463"
+  },
+  {
+   "label": "AS Physics",
+   "tag": "7407",
+   "path": "/subjects/physics/as-level/physics-7407"
+  },
+  {
+   "label": "A-level Physics",
+   "tag": "7408",
+   "path": "/subjects/physics/a-level/physics-7408"
+  }
+ ],
+ "politics": [
+  {
+   "label": "A-level Politics",
+   "tag": "7152",
+   "path": "/subjects/politics/a-level/politics-7152"
+  }
+ ],
+ "psychology": [
+  {
+   "label": "GCSE Psychology",
+   "tag": "8182",
+   "path": "/subjects/psychology/gcse/psychology-8182"
+  },
+  {
+   "label": "AS Psychology",
+   "tag": "7181",
+   "path": "/subjects/psychology/as-level/psychology-7181"
+  },
+  {
+   "label": "A-level Psychology",
+   "tag": "7182",
+   "path": "/subjects/psychology/a-level/psychology-7182"
+  }
+ ],
+ "religious-studies": [
+  {
+   "label": "GCSE Religious Studies",
+   "tag": "8061",
+   "path": "/subjects/religious-studies/gcse/religious-studies-8061"
+  },
+  {
+   "label": "GCSE Religious Studies",
+   "tag": "8062",
+   "path": "/subjects/religious-studies/gcse/religious-studies-8062"
+  },
+  {
+   "label": "GCSE Religious Studies",
+   "tag": "8063",
+   "path": "/subjects/religious-studies/gcse/religious-studies-8063"
+  },
+  {
+   "label": "AS Religious Studies",
+   "tag": "7061",
+   "path": "/subjects/religious-studies/as-level/religious-studies-7061"
+  },
+  {
+   "label": "A-level Religious Studies",
+   "tag": "7062",
+   "path": "/subjects/religious-studies/a-level/religious-studies-7062"
+  }
+ ],
+ "science": [
+  {
+   "label": "GCSE Biology",
+   "tag": "8461",
+   "path": "/subjects/science/gcse/science-8461"
+  },
+  {
+   "label": "GCSE Chemistry",
+   "tag": "8462",
+   "path": "/subjects/science/gcse/science-8462"
+  },
+  {
+   "label": "GCSE Physics",
+   "tag": "8463",
+   "path": "/subjects/science/gcse/science-8463"
+  },
+  {
+   "label": "GCSE Combined Science: Trilogy",
+   "tag": "8464",
+   "path": "/subjects/science/gcse/science-8464"
+  },
+  {
+   "label": "GCSE Combined Science: Synergy",
+   "tag": "8465",
+   "path": "/subjects/science/gcse/science-8465"
+  },
+  {
+   "label": "AS Biology",
+   "tag": "7401",
+   "path": "/subjects/science/as-level/science-7401"
+  },
+  {
+   "label": "AS Chemistry",
+   "tag": "7404",
+   "path": "/subjects/science/as-level/science-7404"
+  },
+  {
+   "label": "AS Physics",
+   "tag": "7407",
+   "path": "/subjects/science/as-level/science-7407"
+  },
+  {
+   "label": "A-level Biology",
+   "tag": "7402",
+   "path": "/subjects/science/a-level/science-7402"
+  },
+  {
+   "label": "A-level Chemistry",
+   "tag": "7405",
+   "path": "/subjects/science/a-level/science-7405"
+  },
+  {
+   "label": "A-level Physics",
+   "tag": "7408",
+   "path": "/subjects/science/a-level/science-7408"
+  },
+  {
+   "label": "A-level Environmental Science",
+   "tag": "7447",
+   "path": "/subjects/science/a-level/science-7447"
+  },
+  {
+   "label": "Applied General Science",
+   "tag": "1775",
+   "path": "/subjects/science/applied-general/science-1775"
+  },
+  {
+   "label": "ELC Science",
+   "tag": "5960",
+   "path": "/subjects/science/elc/science-5960"
+  }
+ ],
+ "sociology": [
+  {
+   "label": "GCSE Sociology",
+   "tag": "8192",
+   "path": "/subjects/sociology/gcse/sociology-8192"
+  },
+  {
+   "label": "AS Sociology",
+   "tag": "7191",
+   "path": "/subjects/sociology/as-level/sociology-7191"
+  },
+  {
+   "label": "A-level Sociology",
+   "tag": "7192",
+   "path": "/subjects/sociology/a-level/sociology-7192"
+  }
+ ],
+ "spanish": [
+  {
+   "label": "GCSE Spanish",
+   "tag": "8692",
+   "path": "/subjects/spanish/gcse/spanish-8692"
+  },
+  {
+   "label": "AS Spanish",
+   "tag": "7691",
+   "path": "/subjects/spanish/as-level/spanish-7691"
+  },
+  {
+   "label": "A-level Spanish",
+   "tag": "7692",
+   "path": "/subjects/spanish/a-level/spanish-7692"
+  },
+  {
+   "label": "FCSE Spanish",
+   "tag": "8998",
+   "path": "/subjects/spanish/fcse/spanish-8998"
+  }
+ ]
+}

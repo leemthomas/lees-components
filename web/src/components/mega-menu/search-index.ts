@@ -7,7 +7,6 @@ export type IndexEntry = {
   label: string
   href: string
   newTab: boolean
-  icon?: string
   tag?: string
   description?: string
   /** Where it lives in the menu, e.g. "Qualifications › GCSEs" */
@@ -37,7 +36,6 @@ export function buildIndex(nav: Navigation): IndexEntry[] {
     key: string
     label?: string | null
     link?: Parameters<typeof resolveHref>[0]
-    icon?: string | null
     tag?: string | null
     description?: string | null
     keywords?: Array<string> | null
@@ -56,7 +54,6 @@ export function buildIndex(nav: Navigation): IndexEntry[] {
       label,
       href,
       newTab: !!raw.link?.openInNewTab,
-      icon: stegaClean(raw.icon ?? '') || undefined,
       tag,
       description,
       trail: raw.trail,
@@ -73,12 +70,19 @@ export function buildIndex(nav: Navigation): IndexEntry[] {
     const menuLabel = stegaClean(menu.label ?? '')
     for (const col of menu.columns ?? []) {
       const trail = [menuLabel, stegaClean(col.heading ?? '')].filter(Boolean).join(' › ')
-      for (const l of col.links ?? []) add({ ...l, key: l._key, trail })
+      for (const l of col.links ?? []) {
+        add({ ...l, key: l._key, trail })
+        // Sub-menu links: "Subjects › Biology › GCSE"
+        for (const k of l.children ?? []) {
+          const subTrail = [stegaClean(l.label ?? ''), stegaClean(k.group ?? '')].filter(Boolean).join(' › ')
+          add({ ...k, key: k._key, keywords: [stegaClean(l.label ?? '')], trail: [menuLabel, subTrail].filter(Boolean).join(' › ') })
+        }
+      }
       if (col.footerLink) add({ ...col.footerLink, key: `${col._key}-foot`, trail: menuLabel })
     }
     for (const q of menu.quickLinks ?? []) add({ ...q, key: q._key, trail: menuLabel })
     for (const ft of menu.featured ?? []) {
-      if (ft.cta) add({ key: ft._key, label: ft.heading, link: ft.cta.link, icon: ft.icon, description: ft.text, trail: `${menuLabel} › Featured` })
+      if (ft.cta) add({ key: ft._key, label: ft.heading, link: ft.cta.link, description: ft.text, trail: `${menuLabel} › Featured` })
     }
   }
   for (const u of nav.utilityLinks ?? []) add({ ...u, key: u._key, trail: 'Top bar' })
@@ -104,6 +108,23 @@ function nearly(a: string, b: string) {
   return check(a, s) || check(a, b)
 }
 
+/** Common abbreviations people type, mapped to the words used in the menu. */
+const SYNONYMS: Record<string, string[]> = {
+  maths: ['mathematics', 'mathematical'],
+  math: ['mathematics', 'mathematical'],
+  pe: ['physical'],
+  re: ['religious'],
+  rs: ['religious'],
+  dt: ['design'],
+  cs: ['computer'],
+  ict: ['computer'],
+  epq: ['project'],
+  nea: ['non', 'coursework'],
+  alevel: ['a', 'level'],
+  timetable: ['timetables', 'dates'],
+  results: ['result'],
+}
+
 const startsWord = (haystack: string, token: string) => haystack === token || haystack.startsWith(token) || haystack.includes(` ${token}`)
 
 export function searchIndex(index: IndexEntry[], query: string, limit = 8): SearchHit[] {
@@ -116,14 +137,12 @@ export function searchIndex(index: IndexEntry[], query: string, limit = 8): Sear
     for (const e of index) {
       let score = 0
       let ok = true
-      for (const t of tokens) {
+      for (const tok of tokens) {
         let s = 0
-        if (e.words.some((w) => w.startsWith(t))) s = 10
-        else if (e.tag_n && e.tag_n.startsWith(t)) s = 12
-        else if (startsWord(e.keywords_n, t)) s = 6
-        else if (startsWord(e.description_n, t)) s = 3
-        else if (startsWord(e.trail_n, t)) s = 2
-        else if (fuzzy && t.length >= 4 && e.words.some((w) => w.length >= 4 && nearly(t, w))) s = 5
+        for (const t of [tok, ...(SYNONYMS[tok] ?? [])]) {
+          s = Math.max(s, scoreToken(e, t, fuzzy))
+          if (s) break
+        }
         if (!s) { ok = false; break }
         score += s
       }
@@ -134,11 +153,31 @@ export function searchIndex(index: IndexEntry[], query: string, limit = 8): Sear
       score -= e.label_n.length / 100
       hits.push({ ...e, score })
     }
-    return hits.sort((a, b) => b.score - a.score).slice(0, limit)
+    // The same qualification can sit under two subjects (e.g. Biology and Science): show it once
+    const seen = new Set<string>()
+    return hits
+      .sort((a, b) => b.score - a.score)
+      .filter((h) => {
+        const k = `${h.label_n}|${h.tag_n}`
+        if (seen.has(k)) return false
+        seen.add(k)
+        return true
+      })
+      .slice(0, limit)
   }
 
   const exact = run(false)
   return exact.length ? exact : run(true)
+}
+
+function scoreToken(e: IndexEntry, t: string, fuzzy: boolean) {
+  if (e.words.some((w) => w.startsWith(t))) return 10
+  if (e.tag_n && e.tag_n.startsWith(t)) return 12
+  if (startsWord(e.keywords_n, t)) return 6
+  if (startsWord(e.description_n, t)) return 3
+  if (startsWord(e.trail_n, t)) return 2
+  if (fuzzy && t.length >= 4 && e.words.some((w) => w.length >= 4 && nearly(t, w))) return 5
+  return 0
 }
 
 /** Splits a label so the parts that match the query can be wrapped in <mark>. */

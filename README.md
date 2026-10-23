@@ -11,7 +11,7 @@ lees-components/
 ├── studio/                 Sanity Studio (standalone, Vite)
 │   ├── schemaTypes/
 │   │   ├── documents/      page, siteSettings
-│   │   ├── navigation/     mega menu (navigation singleton, menus, columns, links, featured cards)
+│   │   ├── navigation/     mega menu (navigation singleton, menus, sections, links, sub-menus, featured cards)
 │   │   ├── objects/        link, button, seo
 │   │   ├── blocks/         heroSlider, heroSlide, statsBand, quickLinks, cardGrid, ctaBanner, richText
 │   │   └── shared/         option lists and the shared "Section" fields
@@ -56,15 +56,15 @@ Images are the public ones from aqa.org.uk, with their original alt text.
 
 The site header is a Sanity-driven mega menu that replaces the aqa.org.uk one. Edit it in the Studio under **Mega menu**.
 
-- **Menus:** each top-level item opens a panel. A panel has an optional intro, a "View all" link, columns of links, up to two featured cards and a bottom bar of bold links. A menu can also be a plain link with no panel.
-- **Columns:** "Compact" (small icon and label) or "Detailed" (icon tile, label and a description line). A column can be up to 4 wide, and long lists such as all subjects flow across the extra width.
-- **Links:** label, link, icon, a code or tag (e.g. 8461), a New / Updated / Popular badge and extra search keywords.
-- **Icons:** pick from the solid icon set with the picker. The set lives in `web/src/lib/menu-icons.tsx` and a copy in `studio/components/menu-icons.tsx`; keep them identical (`npm run icons:check`).
-- **Featured cards:** image, purple, teal or light, with eyebrow, heading, text and a link.
+- **Sticky header:** the purple top bar scrolls away and the main bar sticks to the top, slimming down once the page has scrolled.
+- **Sections:** each panel is a set of titled sections (e.g. "Sciences", "Results"). Sections flow down into columns with a divider between each column. Leave "Number of columns" blank to fit automatically.
+- **Links:** label, link, a code or tag (e.g. 8461), a New / Updated / Popular badge, extra search keywords, and an optional description shown in "Detailed" sections.
+- **Sub-menus:** give a link a **Sub-menu** and pointing at it (or focusing it, or tapping it on a touch screen) shows its links in the right-hand pane. Sub-menu links can share a **group** heading such as "GCSE". Every subject has its qualifications as a sub-menu, taken from the subject pages on aqa.org.uk (`studio/seed/subject-qualifications.json`).
+- **Featured cards:** image, purple, teal or light, with eyebrow, heading, text and a link. They fill the right-hand pane until a sub-menu is shown.
 - **Filter box:** tick "Show a filter box" on long panels to narrow the links as you type.
-- **Search:** the magnifier (or `/`, or Ctrl/Cmd+K) opens live search across every menu link, code and keyword, plus pages on this site via `/api/search`. It allows one-letter typos. Enter goes to the full aqa.org.uk search.
+- **Search:** the magnifier (or `/`, or Ctrl/Cmd+K) opens live search across every menu and sub-menu link, code and keyword, plus pages on this site via `/api/search`. It allows one-letter typos and common abbreviations (maths, PE, RE, DT, EPQ). Enter goes to the full aqa.org.uk search.
 
-Behaviour: panels open on hover after a short pause and stay open while the pointer moves into them, open on click or tap, and work from the keyboard (arrow keys between items, down arrow into a panel, Esc to close and return focus). Below 1024px the menu becomes a drawer with search and accordions.
+Behaviour: panels open on hover after a short pause and stay open while the pointer moves into them, and open on click or tap. Sub-menus wait a moment before switching, so moving diagonally into the pane doesn't change it. Keyboard: arrow keys move between top items, down arrow goes into a panel, right arrow on a link with a sub-menu goes into it and left arrow comes back, Esc closes and returns focus. Below 1024px the menu becomes a drawer with search, accordions and expandable sub-menus.
 
 Files: `web/src/components/mega-menu/`, schema in `studio/schemaTypes/navigation/mega-menu.ts`, content in `studio/seed/navigation.mjs`.
 

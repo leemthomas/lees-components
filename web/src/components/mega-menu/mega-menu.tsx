@@ -7,6 +7,7 @@ import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, ty
 import {
   ArrowRightIcon,
   CaretDownIcon,
+  CaretRightIcon,
   FunnelSimpleIcon,
   ListIcon,
   MagnifyingGlassIcon,
@@ -14,7 +15,6 @@ import {
   XIcon,
 } from '@phosphor-icons/react'
 import { resolveHref } from '@/lib/links'
-import { MENU_ICONS } from '@/lib/menu-icons'
 import { urlFor } from '@/sanity/image'
 import { MenuAnchor } from './menu-anchor'
 import { MenuSearch } from './menu-search'
@@ -23,8 +23,10 @@ import type { Menu, MenuColumn, MenuFeature, MenuLink, Navigation, SandboxLink }
 import './mega-menu.css'
 
 const OPEN_DELAY = 140 // hover this long before a panel opens
-const SWITCH_DELAY = 70 // moving between items while a panel is open
+const SWITCH_DELAY = 70 // moving between top items while a panel is open
 const CLOSE_DELAY = 300 // grace period when the pointer leaves the menu
+const SUB_OPEN_DELAY = 90 // hover a parent link this long to show its sub-menu
+const SUB_SWITCH_DELAY = 220 // longer when another sub-menu is showing, so a diagonal move to the pane doesn't switch it
 const SEARCH = 'search'
 
 /* ------------------------------------------------------------------ */
@@ -47,6 +49,8 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
   const [drawer, setDrawer] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
   const [top, setTop] = useState(160)
+  const [scrolled, setScrolled] = useState(false)
+  const [utilityH, setUtilityH] = useState(42)
 
   const menus = nav.menus ?? []
   const searchOn = nav.search?.enabled !== false
@@ -60,6 +64,28 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
     const bar = headerRef.current?.querySelector('.mm-bar')
     if (bar) setTop(Math.max(0, bar.getBoundingClientRect().bottom))
   }, [])
+
+  // Sticky header: the purple bar scrolls away, the main bar sticks and slims down
+  useEffect(() => {
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const h = headerRef.current?.querySelector<HTMLElement>('.mm-utility')?.offsetHeight ?? 42
+        setUtilityH(h)
+        setScrolled(window.scrollY > h + 8)
+        measure()
+      })
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [measure])
 
   const open = useCallback(
     (key: string) => {
@@ -118,7 +144,6 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
     return () => document.removeEventListener('pointerdown', onDown)
   }, [active, close])
 
-  // Focus the search box when search opens
   useEffect(() => {
     if (active === SEARCH) requestAnimationFrame(() => searchInputRef.current?.focus())
   }, [active])
@@ -206,14 +231,15 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
         className="mm"
         data-open={active ? 'true' : undefined}
         data-drawer={drawer ? 'true' : undefined}
-        style={{ '--mm-top': `${top}px` } as CSSProperties}
+        data-scrolled={scrolled ? 'true' : undefined}
+        style={{ '--mm-top': `${top}px`, '--mm-utility-h': `${utilityH}px` } as CSSProperties}
         onPointerEnter={onHeaderEnter}
         onPointerLeave={(e) => onHeaderLeave(e.pointerType)}
         onBlur={onHeaderBlur}
       >
         <a href="#main" className="skip-link">Skip to main content</a>
 
-        {/* ---------- Purple top bar ---------- */}
+        {/* ---------- Purple top bar (scrolls away) ---------- */}
         <div className="mm-utility">
           <div className="wrapper mm-utility__inner">
             {strap && <p className="mm-utility__strap">{strap}</p>}
@@ -243,7 +269,7 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
           </div>
         </div>
 
-        {/* ---------- Main bar ---------- */}
+        {/* ---------- Main bar (sticks) ---------- */}
         <div className="mm-bar">
           <div className="wrapper mm-bar__inner">
             <Link href="/" className="mm-logo" aria-label="AQA home">
@@ -288,7 +314,6 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
                         onKeyDown={(e) => onTriggerKey(e, key)}
                       >
                         {m.label}
-                        <CaretDownIcon className="mm-nav__caret" weight="bold" aria-hidden="true" />
                       </button>
                       <div
                         id={`${uid}-panel-${key}`}
@@ -298,7 +323,7 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
                         role="region"
                         aria-label={stegaClean(m.label) ?? undefined}
                       >
-                        <Panel menu={m} filter={isOpen ? filter : ''} setFilter={setFilter} onNavigate={afterNavigate} onSearchAll={searchAll} />
+                        <Panel menu={m} open={isOpen} filter={isOpen ? filter : ''} setFilter={setFilter} onNavigate={afterNavigate} onSearchAll={searchAll} />
                       </div>
                     </li>
                   )
@@ -381,7 +406,7 @@ export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxL
                                 <ArrowRightIcon weight="bold" aria-hidden="true" />
                               </MenuAnchor>
                             )}
-                            {m.columns?.map((c) => <Column key={c._key} col={c} filter="" onNavigate={afterNavigate} compact />)}
+                            {m.columns?.map((c) => <DrawerSection key={c._key} col={c} onNavigate={afterNavigate} />)}
                             <QuickLinks menu={m} onNavigate={afterNavigate} />
                           </div>
                         )}
@@ -434,14 +459,18 @@ function matches(l: MenuLink, f: string) {
   return f.split(' ').every((t) => words.some((w) => w.startsWith(t)))
 }
 
+const hasKids = (l: MenuLink) => (l.children?.length ?? 0) > 0
+
 function Panel({
   menu,
+  open,
   filter,
   setFilter,
   onNavigate,
   onSearchAll,
 }: {
   menu: Menu
+  open: boolean
   filter: string
   setFilter: (f: string) => void
   onNavigate: () => void
@@ -451,11 +480,34 @@ function Panel({
   const viewAll = resolveHref(menu.link)
   const featured = menu.featured ?? []
   const f = normalise(filter)
-  const columns = (menu.columns ?? [])
+  const allColumns = menu.columns ?? []
+  const columns = allColumns
     .map((c) => ({ ...c, links: (c.links ?? []).filter((l) => matches(l, f)) }))
     .filter((c) => !f || c.links.length > 0)
-  const used = (menu.columns ?? []).reduce((n, c) => n + (stegaClean(c.span) ?? 1), 0)
-  const gridCols = Math.min(featured.length ? 3 : 4, Math.max(used, 1))
+
+  const parents = allColumns.flatMap((c) => c.links ?? []).filter(hasKids)
+  const hasPane = parents.length > 0 || featured.length > 0
+
+  // Which parent's sub-menu is showing in the side pane
+  const [sub, setSub] = useState<string | null>(null)
+  const subTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const lastPointer = useRef('mouse')
+  const paneRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!open) {
+      setSub(null)
+      clearTimeout(subTimer.current)
+    }
+  }, [open])
+  const current = parents.find((p) => p._key === sub) ?? null
+
+  const hoverParent = (key: string | null) => {
+    clearTimeout(subTimer.current)
+    if (key === sub) return
+    subTimer.current = setTimeout(() => setSub(key), sub ? SUB_SWITCH_DELAY : SUB_OPEN_DELAY)
+  }
+
+  const cols = Math.max(1, Math.min(stegaClean(menu.columnCount) || (hasPane ? 3 : 4), columns.length || 1))
 
   return (
     <div className="wrapper mm-panel__inner">
@@ -492,10 +544,33 @@ function Panel({
         )}
       </div>
 
-      <div className="mm-panel__body" data-featured={featured.length > 0 || undefined}>
-        <div className="mm-cols" style={{ '--mm-cols': gridCols } as CSSProperties}>
+      <div className="mm-panel__body" data-pane={hasPane || undefined}>
+        <div className="mm-cols" style={{ '--mm-cols': cols } as CSSProperties} onPointerLeave={() => clearTimeout(subTimer.current)}>
           {columns.map((c) => (
-            <Column key={c._key} col={c} filter={f ? filter : ''} onNavigate={onNavigate} maxSpan={gridCols} />
+            <Section
+              key={c._key}
+              col={c}
+              filter={f ? filter : ''}
+              onNavigate={onNavigate}
+              sub={sub}
+              paneId={`${id}-pane`}
+              onParentHover={(key, pointerType) => {
+                lastPointer.current = pointerType
+                if (pointerType === 'mouse') hoverParent(key)
+              }}
+              onParentFocus={(key) => {
+                clearTimeout(subTimer.current)
+                setSub(key)
+              }}
+              onParentClick={(key, e) => {
+                // On touch, the first tap opens the sub-menu; the second follows the link
+                if (key && lastPointer.current !== 'mouse' && sub !== key) {
+                  e.preventDefault()
+                  setSub(key)
+                }
+              }}
+              onParentRight={() => paneRef.current?.querySelector<HTMLElement>('a[href]')?.focus()}
+            />
           ))}
           {f && columns.length === 0 && (
             <div className="mm-nomatch">
@@ -507,15 +582,84 @@ function Panel({
             </div>
           )}
         </div>
-        {featured.length > 0 && (
-          <aside className="mm-featured" aria-label="Featured">
-            {featured.map((ft) => <Feature key={ft._key} feature={ft} onNavigate={onNavigate} />)}
-          </aside>
+
+        {hasPane && (
+          <div
+            ref={paneRef}
+            id={`${id}-pane`}
+            className="mm-pane"
+            data-sub={current ? 'true' : undefined}
+            onPointerEnter={() => clearTimeout(subTimer.current)}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowLeft' && current) {
+                e.preventDefault()
+                document.querySelector<HTMLElement>(`[data-parent-key="${current._key}"]`)?.focus()
+              }
+            }}
+          >
+            {current ? (
+              <SubMenu key={current._key} parent={current} onNavigate={onNavigate} />
+            ) : featured.length > 0 ? (
+              <aside className="mm-featured" aria-label="Featured">
+                {featured.map((ft) => <Feature key={ft._key} feature={ft} onNavigate={onNavigate} />)}
+              </aside>
+            ) : (
+              <p className="mm-pane__hint">Point at a link with an arrow to see more.</p>
+            )}
+          </div>
         )}
       </div>
 
       <QuickLinks menu={menu} onNavigate={onNavigate} />
     </div>
+  )
+}
+
+function SubMenu({ parent, onNavigate }: { parent: MenuLink; onNavigate: () => void }) {
+  const href = resolveHref(parent.link)
+  const kids = parent.children ?? []
+  // Consecutive links with the same group share a small heading
+  const groups: Array<{ name: string; links: typeof kids }> = []
+  for (const k of kids) {
+    const name = stegaClean(k.group ?? '') || ''
+    const last = groups[groups.length - 1]
+    if (last && last.name === name) last.links.push(k)
+    else groups.push({ name, links: [k] })
+  }
+  return (
+    <section className="mm-sub" aria-label={`${stegaClean(parent.label)} sub-menu`} data-long={kids.length > 9 || undefined}>
+      <h3 className="mm-sub__title">{parent.label}</h3>
+      {parent.childrenIntro && <p className="mm-sub__intro">{parent.childrenIntro}</p>}
+      <div className="mm-sub__groups">
+        {groups.map((g, i) => (
+          <div key={i} className="mm-sub__group">
+            {g.name && <p className="mm-sub__group-title">{g.name}</p>}
+            <ul role="list">
+              {g.links.map((k) => {
+                const h = resolveHref(k.link)
+                return h ? (
+                  <li key={k._key}>
+                    <MenuAnchor href={h} newTab={k.link?.openInNewTab} className="mm-sublink" onClick={onNavigate}>
+                      <span>
+                        {k.label}{' '}
+                        {k.tag && <span className="mm-tag">{k.tag}</span>}
+                      </span>
+                      <ArrowRightIcon className="mm-link__arrow" weight="bold" aria-hidden="true" />
+                    </MenuAnchor>
+                  </li>
+                ) : null
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+      {href && (
+        <MenuAnchor href={href} newTab={parent.link?.openInNewTab} className="mm-sub__all" onClick={onNavigate}>
+          Go to {parent.label}
+          <ArrowRightIcon weight="bold" aria-hidden="true" />
+        </MenuAnchor>
+      )}
+    </section>
   )
 }
 
@@ -538,15 +682,45 @@ function QuickLinks({ menu, onNavigate }: { menu: Menu; onNavigate: () => void }
 
 const BADGES: Record<string, string> = { new: 'New', updated: 'Updated', popular: 'Popular' }
 
-function Column({ col, filter, onNavigate, compact = false, maxSpan = 4 }: { col: MenuColumn; filter: string; onNavigate: () => void; compact?: boolean; maxSpan?: number }) {
-  const style = compact ? 'compact' : stegaClean(col.style) || 'compact'
-  const span = compact ? 1 : Math.min(stegaClean(col.span) || 1, maxSpan)
+function LinkLabel({ l, filter }: { l: MenuLink; filter: string }) {
+  const badge = stegaClean(l.badge ?? '')
+  return (
+    <span className="mm-link__label">
+      {filter ? highlight(l.label ?? '', filter).map((p, i) => (p.hit ? <mark key={i}>{p.text}</mark> : <span key={i}>{p.text}</span>)) : l.label}{' '}
+      {l.tag && <span className="mm-tag">{l.tag}</span>}
+      {badge && BADGES[badge] && <span className={`mm-badge mm-badge--${badge}`}>{BADGES[badge]}</span>}
+    </span>
+  )
+}
+
+function Section({
+  col,
+  filter,
+  onNavigate,
+  sub,
+  paneId,
+  onParentHover,
+  onParentFocus,
+  onParentClick,
+  onParentRight,
+}: {
+  col: MenuColumn
+  filter: string
+  onNavigate: () => void
+  sub: string | null
+  paneId: string
+  onParentHover: (key: string | null, pointerType: string) => void
+  onParentFocus: (key: string) => void
+  onParentClick: (key: string | null, e: React.MouseEvent) => void
+  onParentRight: () => void
+}) {
+  const style = stegaClean(col.style) || 'compact'
   const headingHref = resolveHref(col.headingLink)
   const footHref = col.footerLink ? resolveHref(col.footerLink.link) : null
   const links = col.links ?? []
 
   return (
-    <section className="mm-col" data-style={style} style={{ '--span': span } as CSSProperties} aria-label={col.heading ? undefined : 'Links'}>
+    <section className="mm-col" data-style={style} aria-label={col.heading ? undefined : 'Links'}>
       {col.heading && (
         <h3 className="mm-col__heading">
           {headingHref ? (
@@ -563,28 +737,43 @@ function Column({ col, filter, onNavigate, compact = false, maxSpan = 4 }: { col
         {links.map((l) => {
           const href = resolveHref(l.link)
           if (!href) return null
-          const def = l.icon ? MENU_ICONS[stegaClean(l.icon)] : undefined
-          const Icon = def?.icon
-          const badge = stegaClean(l.badge ?? '')
+          const parent = hasKids(l)
           return (
             <li key={l._key}>
-              <MenuAnchor href={href} newTab={l.link?.openInNewTab} className="mm-link" data-has-icon={Icon ? 'true' : undefined} onClick={onNavigate}>
-                {Icon && (
-                  <span className="mm-tile" aria-hidden="true">
-                    <Icon weight="fill" />
-                  </span>
-                )}
+              <MenuAnchor
+                href={href}
+                newTab={l.link?.openInNewTab}
+                className="mm-link"
+                data-parent={parent || undefined}
+                data-parent-key={parent ? l._key : undefined}
+                data-current={(parent && sub === l._key) || undefined}
+                aria-controls={parent ? paneId : undefined}
+                onPointerEnter={(e) => onParentHover(parent ? l._key : null, e.pointerType)}
+                onFocus={() => parent && onParentFocus(l._key)}
+                onKeyDown={(e) => {
+                  if (parent && e.key === 'ArrowRight') {
+                    e.preventDefault()
+                    onParentFocus(l._key)
+                    requestAnimationFrame(onParentRight)
+                  }
+                }}
+                onClick={(e) => {
+                  onParentClick(parent ? l._key : null, e)
+                  if (!e.defaultPrevented) onNavigate()
+                }}
+              >
                 <span className="mm-link__text">
-                  <span className="mm-link__label">
-                    {filter
-                      ? highlight(l.label ?? '', filter).map((p, i) => (p.hit ? <mark key={i}>{p.text}</mark> : <span key={i}>{p.text}</span>))
-                      : l.label}{' '}
-                    {l.tag && <span className="mm-tag">{l.tag}</span>}
-                    {badge && BADGES[badge] && <span className={`mm-badge mm-badge--${badge}`}>{BADGES[badge]}</span>}
-                  </span>
+                  <LinkLabel l={l} filter={filter} />
                   {style === 'detailed' && l.description && <span className="mm-link__desc">{l.description}</span>}
                 </span>
-                <ArrowRightIcon className="mm-link__arrow" weight="bold" aria-hidden="true" />
+                {parent ? (
+                  <>
+                    <CaretRightIcon className="mm-link__caret" weight="bold" aria-hidden="true" />
+                    <span className="sr-only"> (has a sub-menu: press the right arrow key)</span>
+                  </>
+                ) : (
+                  <ArrowRightIcon className="mm-link__arrow" weight="bold" aria-hidden="true" />
+                )}
               </MenuAnchor>
             </li>
           )
@@ -600,11 +789,57 @@ function Column({ col, filter, onNavigate, compact = false, maxSpan = 4 }: { col
   )
 }
 
+/** Mobile: sections stacked, parents expand to show their sub-menu inline. */
+function DrawerSection({ col, onNavigate }: { col: MenuColumn; onNavigate: () => void }) {
+  const [open, setOpen] = useState<string | null>(null)
+  return (
+    <section className="mm-col mm-col--drawer">
+      {col.heading && <h3 className="mm-col__heading">{col.heading}</h3>}
+      <ul role="list" className="mm-links">
+        {(col.links ?? []).map((l) => {
+          const href = resolveHref(l.link)
+          if (!href) return null
+          const isOpen = open === l._key
+          return (
+            <li key={l._key}>
+              <div className="mm-drawer__row">
+                <MenuAnchor href={href} newTab={l.link?.openInNewTab} className="mm-link" onClick={onNavigate}>
+                  <span className="mm-link__text"><LinkLabel l={l} filter="" /></span>
+                </MenuAnchor>
+                {hasKids(l) && (
+                  <button
+                    type="button"
+                    className="mm-drawer__more"
+                    aria-expanded={isOpen}
+                    aria-label={`${isOpen ? 'Hide' : 'Show'} ${stegaClean(l.label)} sub-menu`}
+                    onClick={() => setOpen(isOpen ? null : l._key)}
+                  >
+                    <CaretDownIcon weight="bold" />
+                  </button>
+                )}
+              </div>
+              {isOpen && (
+                <div className="mm-drawer__sub">
+                  <SubMenu parent={l} onNavigate={onNavigate} />
+                </div>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+      {col.footerLink && resolveHref(col.footerLink.link) && (
+        <MenuAnchor href={resolveHref(col.footerLink.link)!} newTab={col.footerLink.link?.openInNewTab} className="mm-col__foot" onClick={onNavigate}>
+          {col.footerLink.label}
+          <ArrowRightIcon weight="bold" aria-hidden="true" />
+        </MenuAnchor>
+      )}
+    </section>
+  )
+}
+
 function Feature({ feature, onNavigate }: { feature: MenuFeature; onNavigate: () => void }) {
   const style = stegaClean(feature.style) || 'image'
   const href = feature.cta ? resolveHref(feature.cta.link) : null
-  const def = feature.icon ? MENU_ICONS[stegaClean(feature.icon)] : undefined
-  const Icon = def?.icon
   const img = feature.image?.asset ? feature.image : null
 
   return (
@@ -615,18 +850,13 @@ function Feature({ feature, onNavigate }: { feature: MenuFeature; onNavigate: ()
           <img
             src={urlFor(img).width(640).height(360).fit('crop').quality(80).url()}
             srcSet={`${urlFor(img).width(400).height(225).fit('crop').quality(80).url()} 400w, ${urlFor(img).width(640).height(360).fit('crop').quality(80).url()} 640w`}
-            sizes="320px"
+            sizes="340px"
             alt={img.alt ?? ''}
             width={640}
             height={360}
             loading="lazy"
           />
         </div>
-      )}
-      {style !== 'image' && Icon && (
-        <span className="mm-feature__icon" aria-hidden="true">
-          <Icon weight="fill" />
-        </span>
       )}
       <div className="mm-feature__body">
         {feature.eyebrow && <p className="mm-feature__eyebrow">{feature.eyebrow}</p>}
@@ -673,3 +903,4 @@ function SandboxMenu({ links }: { links: SandboxLink[] }) {
     </details>
   )
 }
+
