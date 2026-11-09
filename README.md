@@ -119,6 +119,8 @@ npm run dev
 
 In the Studio, open **Presentation** to edit any page with the live site beside the form. Click any text on the page to jump to its field.
 
+To reorder a page's sections, hover the edge of a section until the drag handle appears, then drag it into place. Hold **Shift** while dragging to zoom out to an outline of the whole page. The order saves to the page's draft, so publish it to make it live. Drag and drop doesn't work on touch devices.
+
 ### 6. Deploying
 
 Push to `main`. Vercel builds `web` as **lees-components** and `studio` as **lees-components-studio**. If you add a custom domain, add it to the Sanity CORS origins (`npx sanity cors add https://your-domain --credentials`), to `frame-ancestors` in `web/next.config.ts`, and update `SANITY_STUDIO_PREVIEW_URL` / `NEXT_PUBLIC_SANITY_STUDIO_URL` in Vercel.

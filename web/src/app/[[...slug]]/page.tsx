@@ -22,5 +22,5 @@ export default async function Page({ params }: Props) {
   const slug = toSlug((await params).slug)
   const { data: page } = await sanityFetch({ query: PAGE_QUERY, params: { slug } })
   if (!page) notFound()
-  return <PageBuilder sections={page.sections} />
+  return <PageBuilder documentId={page._id} documentType={page._type} sections={page.sections} />
 }
