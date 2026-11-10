@@ -30,6 +30,75 @@ export type Overlay = {
   direction?: "90deg" | "270deg" | "0deg" | "180deg";
 };
 
+export type CalendarLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type AllDatesLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type PopularResourcesButton = {
+  label?: string;
+  link?: Link;
+};
+
+export type FinderLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type Cta = {
+  label?: string;
+  link?: Link;
+};
+
+export type TrainingPanelButton = {
+  label?: string;
+  link?: Link;
+};
+
+export type Feature = {
+  image?: FeatureImage;
+  tag?: string;
+  title?: string;
+  text?: string;
+  ctaLabel?: string;
+  link?: Link;
+};
+
+export type Callout = {
+  image?: CalloutImage;
+  tagIcon?: string;
+  tag?: string;
+  title?: string;
+  text?: string;
+  ctaLabel?: string;
+  link?: Link;
+};
+
+export type ResearchLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type AllNewsLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type AllResearchLink = {
+  label?: string;
+  link?: Link;
+};
+
+export type ContactLink = {
+  label?: string;
+  link?: Link;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -60,6 +129,380 @@ export type CardImage = {
   crop?: SanityImageCrop;
   alt?: string;
   _type: "image";
+};
+
+export type Promo = {
+  image?: PromoImage;
+  badgeIcon?: string;
+  badgeColour?: "red" | "purple";
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  cta?: PromoCta;
+};
+
+export type PromoImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "promo.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type PromoCta = {
+  label?: string;
+  link?: Link;
+};
+
+export type SpotlightSlideImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "spotlightSlide.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type FeatureImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type StudentStepImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "studentStep.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type CalloutImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "callout.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
+export type HelpChat = {
+  _type: "helpChat";
+  title?: string;
+  subtitle?: string;
+  greeting?: string;
+  suggestions?: Array<string>;
+  answers?: Array<{
+    keywords?: Array<string>;
+    text?: string;
+    links?: Array<{
+      label?: string;
+      link?: Link;
+      _type: "labelledLink";
+      _key: string;
+    }>;
+    _type: "chatAnswer";
+    _key: string;
+  }>;
+  contactLink?: ContactLink;
+  showBackToTop?: boolean;
+  anchorId?: string;
+};
+
+export type AqaFooter = {
+  _type: "aqaFooter";
+  columns?: Array<{
+    heading?: string;
+    links?: Array<{
+      label?: string;
+      link?: Link;
+      _type: "labelledLink";
+      _key: string;
+    }>;
+    _type: "footerColumn";
+    _key: string;
+  }>;
+  legalLinks?: Array<{
+    label?: string;
+    link?: Link;
+    _type: "labelledLink";
+    _key: string;
+  }>;
+  linkedin?: string;
+  youtube?: string;
+  copyright?: string;
+  notice?: string;
+  anchorId?: string;
+};
+
+export type NewsletterSignup = {
+  _type: "newsletterSignup";
+  heading?: string;
+  intro?: string;
+  emailHint?: string;
+  roles?: Array<string>;
+  buttonLabel?: string;
+  anchorId?: string;
+};
+
+export type NewsResearch = {
+  _type: "newsResearch";
+  eyebrow?: string;
+  heading?: string;
+  researchLink?: ResearchLink;
+  allNewsLink?: AllNewsLink;
+  newsCount?: number;
+  researchHeading?: string;
+  researchCount?: number;
+  allResearchLink?: AllResearchLink;
+  anchorId?: string;
+};
+
+export type ExaminerPromo = {
+  _type: "examinerPromo";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  points?: Array<string>;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+  anchorId?: string;
+};
+
+export type FamilyServices = {
+  _type: "familyServices";
+  eyebrow?: string;
+  heading?: string;
+  services?: Array<{
+    icon?: string;
+    title?: string;
+    text?: string;
+    link?: Link;
+    _type: "familyService";
+    _key: string;
+  }>;
+  anchorId?: string;
+};
+
+export type StudentsPanel = {
+  _type: "studentsPanel";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  eyebrowIcon?: string;
+  seasonal?: boolean;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  buttons?: Array<
+    {
+      _key: string;
+    } & Button
+  >;
+  steps?: Array<{
+    image?: StudentStepImage;
+    icon?: string;
+    title?: string;
+    text?: string;
+    ctaLabel?: string;
+    link?: Link;
+    _type: "studentStep";
+    _key: string;
+  }>;
+  callout?: Callout;
+  anchorId?: string;
+};
+
+export type TrainingPanel = {
+  _type: "trainingPanel";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  button?: TrainingPanelButton;
+  cards?: Array<{
+    icon?: string;
+    kicker?: string;
+    title?: string;
+    text?: string;
+    ctaLabel?: string;
+    link?: Link;
+    highlight?: boolean;
+    _type: "trainingCard";
+    _key: string;
+  }>;
+  feature?: Feature;
+  anchorId?: string;
+};
+
+export type ProofBand = {
+  _type: "proofBand";
+  heading?: string;
+  stats?: Array<{
+    icon?: string;
+    value?: number;
+    suffix?: string;
+    label?: string;
+    description?: string;
+    _type: "proofStat";
+    _key: string;
+  }>;
+  quote?: string;
+  quoteFooter?: string;
+  ctaTitle?: string;
+  ctaText?: string;
+  cta?: Cta;
+  backgroundImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  anchorId?: string;
+};
+
+export type ResourceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "resource";
+};
+
+export type PopularResources = {
+  _type: "popularResources";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  button?: PopularResourcesButton;
+  finderLink?: FinderLink;
+  resources?: Array<
+    {
+      _key: string;
+    } & ResourceReference
+  >;
+  anchorId?: string;
+};
+
+export type SpotlightCarousel = {
+  _type: "spotlightCarousel";
+  eyebrow?: string;
+  heading?: string;
+  slides?: Array<{
+    image?: SpotlightSlideImage;
+    icon?: string;
+    tag?: string;
+    tagStyle?: "default" | "red";
+    title?: string;
+    text?: string;
+    ctaLabel?: string;
+    link?: Link;
+    _type: "spotlightSlide";
+    _key: string;
+  }>;
+  anchorId?: string;
+};
+
+export type KeyDatesPanel = {
+  _type: "keyDatesPanel";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  calendarLink?: CalendarLink;
+  allDatesLink?: AllDatesLink;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  pageSize?: number;
+  anchorId?: string;
+};
+
+export type QualificationFinder = {
+  _type: "qualificationFinder";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  placeholder?: string;
+  popularSearches?: Array<string>;
+  extraQualifications?: Array<{
+    title?: string;
+    level?: "GCSE" | "AS and A-level" | "Vocational" | "Other";
+    subject?: string;
+    code?: string;
+    link?: Link;
+    registerLink?: Link;
+    _type: "extraQualification";
+    _key: string;
+  }>;
+  anchorId?: string;
+};
+
+export type HelpHub = {
+  _type: "helpHub";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  eyebrowIcon?: string;
+  searchPlaceholder?: string;
+  searchUrl?: string;
+  popularLinks?: Array<{
+    label?: string;
+    link?: Link;
+    _type: "labelledLink";
+    _key: string;
+  }>;
+  audiences?: Array<{
+    label?: string;
+    icon?: string;
+    isNew?: boolean;
+    tasks?: Array<{
+      icon?: string;
+      title?: string;
+      description?: string;
+      link?: Link;
+      _type: "hubTask";
+      _key: string;
+    }>;
+    promo?: Promo;
+    _type: "hubAudience";
+    _key: string;
+  }>;
+  feedTitle?: string;
+  anchorId?: string;
+};
+
+export type ExamAlert = {
+  _type: "examAlert";
+  lookAheadDays?: number;
+  linkLabel?: string;
+  linkTarget?: string;
+  anchorId?: string;
 };
 
 export type RichText = {
@@ -430,6 +873,58 @@ export type MegaMenuSubLink = {
   group?: string;
 };
 
+export type NewsArticle = {
+  _id: string;
+  _type: "newsArticle";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  kind?: "news" | "research";
+  date?: string;
+  summary?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  link?: Link;
+};
+
+export type Resource = {
+  _id: string;
+  _type: "resource";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  subject?: string;
+  level?: string;
+  specCode?: string;
+  resourceType?: string;
+  fileSize?: string;
+  fileUrl?: string;
+};
+
+export type KeyDate = {
+  _id: string;
+  _type: "keyDate";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  date?: string;
+  category?: "exam" | "admin" | "results" | "training";
+  series?: string;
+  detail?: string;
+  link?: Link;
+  vLevels?: boolean;
+  forStudents?: boolean;
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -473,6 +968,51 @@ export type Page = {
     | ({
         _key: string;
       } & RichText)
+    | ({
+        _key: string;
+      } & ExamAlert)
+    | ({
+        _key: string;
+      } & HelpHub)
+    | ({
+        _key: string;
+      } & QualificationFinder)
+    | ({
+        _key: string;
+      } & KeyDatesPanel)
+    | ({
+        _key: string;
+      } & SpotlightCarousel)
+    | ({
+        _key: string;
+      } & PopularResources)
+    | ({
+        _key: string;
+      } & ProofBand)
+    | ({
+        _key: string;
+      } & TrainingPanel)
+    | ({
+        _key: string;
+      } & StudentsPanel)
+    | ({
+        _key: string;
+      } & FamilyServices)
+    | ({
+        _key: string;
+      } & ExaminerPromo)
+    | ({
+        _key: string;
+      } & NewsResearch)
+    | ({
+        _key: string;
+      } & NewsletterSignup)
+    | ({
+        _key: string;
+      } & AqaFooter)
+    | ({
+        _key: string;
+      } & HelpChat)
   >;
   seo?: Seo;
 };
@@ -582,10 +1122,45 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Overlay
+  | CalendarLink
+  | AllDatesLink
+  | PopularResourcesButton
+  | FinderLink
+  | Cta
+  | TrainingPanelButton
+  | Feature
+  | Callout
+  | ResearchLink
+  | AllNewsLink
+  | AllResearchLink
+  | ContactLink
   | SanityImageAssetReference
   | Mobile
   | PosterMobile
   | CardImage
+  | Promo
+  | PromoImage
+  | PromoCta
+  | SpotlightSlideImage
+  | FeatureImage
+  | StudentStepImage
+  | CalloutImage
+  | HelpChat
+  | AqaFooter
+  | NewsletterSignup
+  | NewsResearch
+  | ExaminerPromo
+  | FamilyServices
+  | StudentsPanel
+  | TrainingPanel
+  | ProofBand
+  | ResourceReference
+  | PopularResources
+  | SpotlightCarousel
+  | KeyDatesPanel
+  | QualificationFinder
+  | HelpHub
+  | ExamAlert
   | RichText
   | CtaBanner
   | CardGrid
@@ -607,6 +1182,9 @@ export type AllSanitySchemaTypes =
   | MegaMenuColumn
   | MegaMenuLink
   | MegaMenuSubLink
+  | NewsArticle
+  | Resource
+  | KeyDate
   | SiteSettings
   | Page
   | Slug
@@ -824,13 +1402,46 @@ export type PAGE_SEO_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _type,  title,  "slug": slug.current,  sections[]{    ...,    _type == "heroSlider" => {      "slides": slides[        (!defined(publishFrom) || publishFrom <= now()) &&        (!defined(publishUntil) || publishUntil > now())      ]{        ...,        "mp4": videoFile.asset->url,        image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },        poster{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },        buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }      }    },    _type == "cardGrid" => {      cards[]{ ..., image{ ..., "lqip": asset->metadata.lqip }, button{ label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }    },    _type == "ctaBanner" => {      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "quickLinks" => {      links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _type,  title,  "slug": slug.current,  sections[]{    ...,    _type == "heroSlider" => {      "slides": slides[        (!defined(publishFrom) || publishFrom <= now()) &&        (!defined(publishUntil) || publishUntil > now())      ]{        ...,        "mp4": videoFile.asset->url,        image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },        poster{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },        buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }      }    },    _type == "cardGrid" => {      cards[]{ ..., image{ ..., "lqip": asset->metadata.lqip }, button{ label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }    },    _type == "ctaBanner" => {      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "quickLinks" => {      links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "examAlert" => {      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "helpHub" => {      popularLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      audiences[]{ _key, label, icon, isNew, tasks[]{ _key, icon, title, description, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, promo{ eyebrow, title, text, badgeIcon, badgeColour, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } } },      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "latestNews": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0]{ title, date, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },      "extraQualifications": ^.sections[_type == "qualificationFinder"][0].extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "qualificationFinder" => {      extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }    },    _type == "keyDatesPanel" => {      calendarLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allDatesLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "spotlightCarousel" => {      slides[]{ _key, icon, tag, tagStyle, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "popularResources" => {      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, finderLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      resources[]->{ _id, title, subject, level, specCode, resourceType, fileSize, fileUrl }    },    _type == "proofBand" => {      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, backgroundImage{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }    },    _type == "trainingPanel" => {      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      cards[]{ _key, icon, kicker, title, text, ctaLabel, highlight, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      feature{ tag, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "studentsPanel" => {      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      steps[]{ _key, icon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      callout{ tag, tagIcon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "familyServices" => {      services[]{ _key, icon, title, text, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "examinerPromo" => {      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "newsResearch" => {      researchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allNewsLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allResearchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "news": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0...9]{ _id, title, date, summary, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "research": *[_type == "newsArticle" && kind == "research"] | order(date desc)[0...4]{ _id, title, date, summary, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "aqaFooter" => {      columns[]{ _key, heading, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },      legalLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    },    _type == "helpChat" => {      answers[]{ _key, keywords, text, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },      contactLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }    }  }}
 export type PAGE_QUERY_RESULT = {
   _id: string;
   _type: "page";
   title: string | null;
   slug: string | null;
   sections: Array<
+    | {
+        _key: string;
+        _type: "aqaFooter";
+        columns: Array<{
+          _key: string;
+          heading: string | null;
+          links: Array<{
+            _key: string;
+            label: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+        }> | null;
+        legalLinks: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        linkedin?: string;
+        youtube?: string;
+        copyright?: string;
+        notice?: string;
+        anchorId?: string;
+      }
     | {
         _key: string;
         _type: "cardGrid";
@@ -899,6 +1510,264 @@ export type PAGE_QUERY_RESULT = {
         anchorId?: string;
         background?: "grey" | "purple-tint" | "purple" | "white";
         spacing?: "default" | "large" | "none" | "small";
+      }
+    | {
+        _key: string;
+        _type: "examAlert";
+        lookAheadDays?: number;
+        linkLabel?: string;
+        linkTarget?: string;
+        anchorId?: string;
+        keyDates: Array<{
+          _id: string;
+          title: string | null;
+          date: string;
+          category: "admin" | "exam" | "results" | "training" | null;
+          series: string | null;
+          detail: string | null;
+          vLevels: boolean | null;
+          forStudents: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "examinerPromo";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        points?: Array<string>;
+        image: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          lqip: string | null;
+          dims: SanityImageDimensions | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          label: string | null;
+          style: "play" | "primary" | "secondary" | "text" | null;
+          youtubeId: string | null;
+          trackingId: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
+        _type: "familyServices";
+        eyebrow?: string;
+        heading?: string;
+        services: Array<{
+          _key: string;
+          icon: string | null;
+          title: string | null;
+          text: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
+        _type: "helpChat";
+        title?: string;
+        subtitle?: string;
+        greeting?: string;
+        suggestions?: Array<string>;
+        answers: Array<{
+          _key: string;
+          keywords: Array<string> | null;
+          text: string | null;
+          links: Array<{
+            _key: string;
+            label: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+        }> | null;
+        contactLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        showBackToTop?: boolean;
+        anchorId?: string;
+        keyDates: Array<{
+          _id: string;
+          title: string | null;
+          date: string;
+          category: "admin" | "exam" | "results" | "training" | null;
+          series: string | null;
+          detail: string | null;
+          vLevels: boolean | null;
+          forStudents: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "helpHub";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        eyebrowIcon?: string;
+        searchPlaceholder?: string;
+        searchUrl?: string;
+        popularLinks: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        audiences: Array<{
+          _key: string;
+          label: string | null;
+          icon: string | null;
+          isNew: boolean | null;
+          tasks: Array<{
+            _key: string;
+            icon: string | null;
+            title: string | null;
+            description: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+          promo: {
+            eyebrow: string | null;
+            title: string | null;
+            text: string | null;
+            badgeIcon: string | null;
+            badgeColour: "purple" | "red" | null;
+            image: {
+              asset?: SanityImageAssetReference;
+              media?: unknown; // Unable to locate the referenced type "promo.image.media" in schema
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+              lqip: string | null;
+              dims: SanityImageDimensions | null;
+            } | null;
+            cta: {
+              label: string | null;
+              link: {
+                linkType: "external" | "internal" | null;
+                external: string | null;
+                openInNewTab: boolean | null;
+                slug: string | null;
+              } | null;
+            } | null;
+          } | null;
+        }> | null;
+        feedTitle?: string;
+        anchorId?: string;
+        keyDates: Array<{
+          _id: string;
+          title: string | null;
+          date: string;
+          category: "admin" | "exam" | "results" | "training" | null;
+          series: string | null;
+          detail: string | null;
+          vLevels: boolean | null;
+          forStudents: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+        latestNews: {
+          title: string | null;
+          date: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        menuQualifications: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+          children: Array<{
+            _key: string;
+            label: string | null;
+            tag: string | null;
+            group: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+        } | null> | null;
+        extraQualifications: Array<{
+          _key: string;
+          title: string | null;
+          level: "AS and A-level" | "GCSE" | "Other" | "Vocational" | null;
+          subject: string | null;
+          code: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+          registerLink: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
       }
     | {
         _key: string;
@@ -1010,6 +1879,265 @@ export type PAGE_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "keyDatesPanel";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        calendarLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        allDatesLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        image: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          lqip: string | null;
+          dims: SanityImageDimensions | null;
+        } | null;
+        pageSize?: number;
+        anchorId?: string;
+        keyDates: Array<{
+          _id: string;
+          title: string | null;
+          date: string;
+          category: "admin" | "exam" | "results" | "training" | null;
+          series: string | null;
+          detail: string | null;
+          vLevels: boolean | null;
+          forStudents: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "newsletterSignup";
+        heading?: string;
+        intro?: string;
+        emailHint?: string;
+        roles?: Array<string>;
+        buttonLabel?: string;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
+        _type: "newsResearch";
+        eyebrow?: string;
+        heading?: string;
+        researchLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        allNewsLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        newsCount?: number;
+        researchHeading?: string;
+        researchCount?: number;
+        allResearchLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        anchorId?: string;
+        news: Array<{
+          _id: string;
+          title: string | null;
+          date: string | null;
+          summary: string | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+            dims: SanityImageDimensions | null;
+          } | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+        research: Array<{
+          _id: string;
+          title: string | null;
+          date: string | null;
+          summary: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "popularResources";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        button: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        finderLink: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        resources: Array<{
+          _id: string;
+          title: string | null;
+          subject: string | null;
+          level: string | null;
+          specCode: string | null;
+          resourceType: string | null;
+          fileSize: string | null;
+          fileUrl: string | null;
+        }> | null;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
+        _type: "proofBand";
+        heading?: string;
+        stats?: Array<{
+          icon?: string;
+          value?: number;
+          suffix?: string;
+          label?: string;
+          description?: string;
+          _type: "proofStat";
+          _key: string;
+        }>;
+        quote?: string;
+        quoteFooter?: string;
+        ctaTitle?: string;
+        ctaText?: string;
+        cta: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        backgroundImage: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          lqip: string | null;
+          dims: SanityImageDimensions | null;
+        } | null;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
+        _type: "qualificationFinder";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        placeholder?: string;
+        popularSearches?: Array<string>;
+        extraQualifications: Array<{
+          _key: string;
+          title: string | null;
+          level: "AS and A-level" | "GCSE" | "Other" | "Vocational" | null;
+          subject: string | null;
+          code: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+          registerLink: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        anchorId?: string;
+        menuQualifications: Array<{
+          _key: string;
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+          children: Array<{
+            _key: string;
+            label: string | null;
+            tag: string | null;
+            group: string | null;
+            link: {
+              linkType: "external" | "internal" | null;
+              external: string | null;
+              openInNewTab: boolean | null;
+              slug: string | null;
+            } | null;
+          }> | null;
+        } | null> | null;
+      }
+    | {
+        _key: string;
         _type: "quickLinks";
         heading?: string;
         links: Array<{
@@ -1053,6 +2181,38 @@ export type PAGE_QUERY_RESULT = {
       }
     | {
         _key: string;
+        _type: "spotlightCarousel";
+        eyebrow?: string;
+        heading?: string;
+        slides: Array<{
+          _key: string;
+          icon: string | null;
+          tag: string | null;
+          tagStyle: "default" | "red" | null;
+          title: string | null;
+          text: string | null;
+          ctaLabel: string | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown; // Unable to locate the referenced type "spotlightSlide.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+            dims: SanityImageDimensions | null;
+          } | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        anchorId?: string;
+      }
+    | {
+        _key: string;
         _type: "statsBand";
         heading?: string;
         stats?: Array<{
@@ -1066,6 +2226,155 @@ export type PAGE_QUERY_RESULT = {
         background?: "grey" | "purple-tint" | "purple" | "white";
         spacing?: "default" | "large" | "none" | "small";
       }
+    | {
+        _key: string;
+        _type: "studentsPanel";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        eyebrowIcon?: string;
+        seasonal?: boolean;
+        image: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          lqip: string | null;
+          dims: SanityImageDimensions | null;
+        } | null;
+        buttons: Array<{
+          _key: string;
+          label: string | null;
+          style: "play" | "primary" | "secondary" | "text" | null;
+          youtubeId: string | null;
+          trackingId: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        steps: Array<{
+          _key: string;
+          icon: string | null;
+          title: string | null;
+          text: string | null;
+          ctaLabel: string | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown; // Unable to locate the referenced type "studentStep.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+            dims: SanityImageDimensions | null;
+          } | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        callout: {
+          tag: string | null;
+          tagIcon: string | null;
+          title: string | null;
+          text: string | null;
+          ctaLabel: string | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown; // Unable to locate the referenced type "callout.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+            dims: SanityImageDimensions | null;
+          } | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        anchorId?: string;
+        keyDates: Array<{
+          _id: string;
+          title: string | null;
+          date: string;
+          category: "admin" | "exam" | "results" | "training" | null;
+          series: string | null;
+          detail: string | null;
+          vLevels: boolean | null;
+          forStudents: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "trainingPanel";
+        eyebrow?: string;
+        heading?: string;
+        intro?: string;
+        button: {
+          label: string | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        cards: Array<{
+          _key: string;
+          icon: string | null;
+          kicker: string | null;
+          title: string | null;
+          text: string | null;
+          ctaLabel: string | null;
+          highlight: boolean | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        }> | null;
+        feature: {
+          tag: string | null;
+          title: string | null;
+          text: string | null;
+          ctaLabel: string | null;
+          image: {
+            asset?: SanityImageAssetReference;
+            media?: unknown; // Unable to locate the referenced type "feature.image.media" in schema
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            _type: "image";
+            lqip: string | null;
+            dims: SanityImageDimensions | null;
+          } | null;
+          link: {
+            linkType: "external" | "internal" | null;
+            external: string | null;
+            openInNewTab: boolean | null;
+            slug: string | null;
+          } | null;
+        } | null;
+        anchorId?: string;
+      }
   > | null;
 } | null;
 
@@ -1077,7 +2386,7 @@ declare global {
     '*[_type == "page" && defined(slug.current) && (title match $terms || seo.metaDescription match $terms)]\n  | score(boost(title match $terms, 3), seo.metaDescription match $terms)\n  | order(_score desc)[0...6]{ _id, title, "slug": slug.current, "description": seo.metaDescription }': PAGE_SEARCH_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)].slug.current': PAGE_SLUGS_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{ title, seo }': PAGE_SEO_QUERY_RESULT;
-    '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  sections[]{\n    ...,\n    _type == "heroSlider" => {\n      "slides": slides[\n        (!defined(publishFrom) || publishFrom <= now()) &&\n        (!defined(publishUntil) || publishUntil > now())\n      ]{\n        ...,\n        "mp4": videoFile.asset->url,\n        image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        poster{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n      }\n    },\n    _type == "cardGrid" => {\n      cards[]{ ..., image{ ..., "lqip": asset->metadata.lqip }, button{ label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }\n    },\n    _type == "ctaBanner" => {\n      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "quickLinks" => {\n      links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': PAGE_QUERY_RESULT;
+    '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _type,\n  title,\n  "slug": slug.current,\n  sections[]{\n    ...,\n    _type == "heroSlider" => {\n      "slides": slides[\n        (!defined(publishFrom) || publishFrom <= now()) &&\n        (!defined(publishUntil) || publishUntil > now())\n      ]{\n        ...,\n        "mp4": videoFile.asset->url,\n        image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        poster{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n        buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n      }\n    },\n    _type == "cardGrid" => {\n      cards[]{ ..., image{ ..., "lqip": asset->metadata.lqip }, button{ label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }\n    },\n    _type == "ctaBanner" => {\n      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "quickLinks" => {\n      links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "examAlert" => {\n      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "helpHub" => {\n      popularLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      audiences[]{ _key, label, icon, isNew, tasks[]{ _key, icon, title, description, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, promo{ eyebrow, title, text, badgeIcon, badgeColour, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } } },\n      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "latestNews": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0]{ title, date, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n      "extraQualifications": ^.sections[_type == "qualificationFinder"][0].extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "qualificationFinder" => {\n      extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }\n    },\n    _type == "keyDatesPanel" => {\n      calendarLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allDatesLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "spotlightCarousel" => {\n      slides[]{ _key, icon, tag, tagStyle, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "popularResources" => {\n      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, finderLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      resources[]->{ _id, title, subject, level, specCode, resourceType, fileSize, fileUrl }\n    },\n    _type == "proofBand" => {\n      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, backgroundImage{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }\n    },\n    _type == "trainingPanel" => {\n      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      cards[]{ _key, icon, kicker, title, text, ctaLabel, highlight, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      feature{ tag, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "studentsPanel" => {\n      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      steps[]{ _key, icon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      callout{ tag, tagIcon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "familyServices" => {\n      services[]{ _key, icon, title, text, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "examinerPromo" => {\n      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },\n      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "newsResearch" => {\n      researchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allNewsLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allResearchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "news": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0...9]{ _id, title, date, summary, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "research": *[_type == "newsArticle" && kind == "research"] | order(date desc)[0...4]{ _id, title, date, summary, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "aqaFooter" => {\n      columns[]{ _key, heading, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n      legalLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    },\n    _type == "helpChat" => {\n      answers[]{ _key, keywords, text, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },\n      contactLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },\n      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }\n    }\n  }\n}': PAGE_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

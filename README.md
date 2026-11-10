@@ -52,6 +52,18 @@ Open the Studio at https://lees-components-studio.vercel.app and log in with you
 
 Images are the public ones from aqa.org.uk, with their original alt text.
 
+## AQA homepage redesign
+
+The redesigned aqa.org.uk homepage is at **/homepage-redesign** (Studio: All pages > AQA homepage redesign). It uses the existing hero slider and mega menu, plus 15 new page builder blocks under **AQA homepage** in the "Add item" menu:
+
+- **Exam alert bar:** appears on its own while exams from Key dates are on.
+- **Help hub:** search box, audience tabs with top tasks and a promo, and the "Right now at AQA" feed.
+- **Qualification finder:** searches every qualification in the Subjects mega menu, plus extras such as V Levels.
+- **Key dates:** MyAQA dashboard style, with a countdown and filters.
+- **Spotlight carousel**, **Popular resources** (aqa.org.uk download rows), **Proof band**, **Training and events**, **Students and parents**, **Family of services**, **Become an examiner**, **News and research**, **Newsletter sign-up**, **AQA footer** and **Help chat**.
+
+Shared content is edited once in its own list: **Key dates**, **Resources** and **News and research**. Icons are Material Symbols Sharp names (e.g. `school`, `calendar_month`). Add `?today=2026-11-04` to the URL to preview the date-driven parts on another day.
+
 ## Mega menu
 
 The site header is a Sanity-driven mega menu that replaces the aqa.org.uk one. Edit it in the Studio under **Mega menu**.

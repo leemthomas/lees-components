@@ -1,7 +1,8 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { DocumentIcon } from '@sanity/icons/Document'
+import { HOMEPAGE_BLOCKS } from '../blocks/homepage-blocks'
 
-export const PAGE_BUILDER_BLOCKS = ['heroSlider', 'statsBand', 'quickLinks', 'cardGrid', 'ctaBanner', 'richText'] as const
+export const PAGE_BUILDER_BLOCKS = ['heroSlider', 'statsBand', 'quickLinks', 'cardGrid', 'ctaBanner', 'richText', ...HOMEPAGE_BLOCKS] as const
 
 export const pageType = defineType({
   name: 'page',
@@ -37,6 +38,7 @@ export const pageType = defineType({
             { name: 'content', title: 'Content', of: ['richText', 'cardGrid', 'ctaBanner'] },
             { name: 'navigation', title: 'Navigation', of: ['quickLinks'] },
             { name: 'data', title: 'Data', of: ['statsBand'] },
+            { name: 'homepage', title: 'AQA homepage', of: [...HOMEPAGE_BLOCKS] },
           ],
           views: [{ name: 'list' }],
         },

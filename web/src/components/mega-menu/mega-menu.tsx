@@ -18,7 +18,7 @@ import { resolveHref } from '@/lib/links'
 import { urlFor } from '@/sanity/image'
 import { MenuAnchor } from './menu-anchor'
 import { MenuSearch } from './menu-search'
-import { highlight, normalise } from './search-index'
+import { buildIndex, highlight, normalise, shareIndex } from './search-index'
 import type { Menu, MenuColumn, MenuFeature, MenuLink, Navigation, SandboxLink } from './types'
 import './mega-menu.css'
 
@@ -32,6 +32,8 @@ const SEARCH = 'search'
 /* ------------------------------------------------------------------ */
 
 export function MegaMenu({ nav, sandboxLinks = [] }: { nav: Navigation; sandboxLinks?: SandboxLink[] }) {
+  // Let other components (the homepage help hub and chat) search the menu too
+  useEffect(() => shareIndex(buildIndex(nav)), [nav])
   const uid = useId()
   const pathname = usePathname()
   const headerRef = useRef<HTMLElement>(null)

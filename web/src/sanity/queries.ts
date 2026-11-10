@@ -72,6 +72,68 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == "quickLinks" => {
       links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "examAlert" => {
+      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "helpHub" => {
+      popularLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      audiences[]{ _key, label, icon, isNew, tasks[]{ _key, icon, title, description, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, promo{ eyebrow, title, text, badgeIcon, badgeColour, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } } },
+      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "latestNews": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0]{ title, date, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },
+      "extraQualifications": ^.sections[_type == "qualificationFinder"][0].extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "qualificationFinder" => {
+      extraQualifications[]{ _key, title, level, subject, code, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, registerLink{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "menuQualifications": *[_id == "navigation"][0].menus[label == "Subjects"][0].columns[].links[defined(children)]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current }, children[]{ _key, label, tag, group, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } }
+    },
+    _type == "keyDatesPanel" => {
+      calendarLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allDatesLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },
+      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "spotlightCarousel" => {
+      slides[]{ _key, icon, tag, tagStyle, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "popularResources" => {
+      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, finderLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      resources[]->{ _id, title, subject, level, specCode, resourceType, fileSize, fileUrl }
+    },
+    _type == "proofBand" => {
+      cta{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, backgroundImage{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }
+    },
+    _type == "trainingPanel" => {
+      button{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      cards[]{ _key, icon, kicker, title, text, ctaLabel, highlight, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      feature{ tag, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "studentsPanel" => {
+      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },
+      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      steps[]{ _key, icon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      callout{ tag, tagIcon, title, text, ctaLabel, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "familyServices" => {
+      services[]{ _key, icon, title, text, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "examinerPromo" => {
+      image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions },
+      buttons[]{ _key, label, style, youtubeId, trackingId, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "newsResearch" => {
+      researchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allNewsLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }, allResearchLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "news": *[_type == "newsArticle" && kind == "news"] | order(date desc)[0...9]{ _id, title, date, summary, image{ ..., "lqip": asset->metadata.lqip, "dims": asset->metadata.dimensions }, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "research": *[_type == "newsArticle" && kind == "research"] | order(date desc)[0...4]{ _id, title, date, summary, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "aqaFooter" => {
+      columns[]{ _key, heading, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },
+      legalLinks[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
+    },
+    _type == "helpChat" => {
+      answers[]{ _key, keywords, text, links[]{ _key, label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } } },
+      contactLink{ label, link{ linkType, external, openInNewTab, "slug": internal->slug.current } },
+      "keyDates": *[_type == "keyDate" && defined(date)] | order(date asc){ _id, title, date, category, series, detail, vLevels, forStudents, link{ linkType, external, openInNewTab, "slug": internal->slug.current } }
     }
   }
 }`)

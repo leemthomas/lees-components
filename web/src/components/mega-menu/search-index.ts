@@ -204,3 +204,12 @@ export function highlight(label: string, query: string): Array<{ text: string; h
   }
   return out
 }
+
+/* ---------- shared index ----------
+   The mega menu publishes its index here so other components on the page
+   (the homepage help hub and help chat) can search the same links. */
+let shared: IndexEntry[] = []
+export const shareIndex = (index: IndexEntry[]) => {
+  shared = index
+}
+export const searchSharedIndex = (query: string, limit = 4) => searchIndex(shared, query, limit)

@@ -6,12 +6,18 @@ import { seoType } from './objects/seo'
 import { megaMenuTypes } from './navigation/mega-menu'
 import { heroSlideType } from './blocks/hero-slide'
 import { heroSliderType } from './blocks/hero-slider'
+import { keyDateType, newsArticleType, resourceType } from './documents/homepage-data'
+import { homepageBlockTypes } from './blocks/homepage-blocks'
 import { cardGridType, ctaBannerType, quickLinksType, richTextType, statsBandType } from './blocks/other-blocks'
 
 export const schemaTypes = [
   // documents
   pageType,
   siteSettingsType,
+  // homepage data
+  keyDateType,
+  resourceType,
+  newsArticleType,
   // mega menu (navigation singleton and its objects)
   ...megaMenuTypes,
   // objects
@@ -26,4 +32,6 @@ export const schemaTypes = [
   cardGridType,
   ctaBannerType,
   richTextType,
+  // redesigned aqa.org.uk homepage
+  ...homepageBlockTypes,
 ]

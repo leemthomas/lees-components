@@ -2,6 +2,7 @@ import { stegaClean } from 'next-sanity'
 import { HeroSliderSection, type HeroSliderBlock } from './sections/hero-slider-section'
 import { CardGrid, CtaBanner, QuickLinks, RichText, StatsBand } from './sections/other-sections'
 import { SortableSections, type SortableSection } from './sortable-sections'
+import { HOMEPAGE_BLOCK_TYPES, HomepageBlock } from './homepage'
 
 // Generated types for the full query live in sanity.types.ts (npm run typegen).
 type Block = { _key: string; _type: string; [field: string]: unknown }
@@ -34,14 +35,28 @@ export function PageBuilder({
       </div>
     )
   }
+  // The first real section owns the h1 (an alert bar above the hero doesn't count)
+  const firstIndex = Math.max(0, sections.findIndex((b) => b._type !== 'examAlert'))
   const rendered: SortableSection[] = sections.map((block, index) => {
-    const isFirst = index === 0
+    const isFirst = index === firstIndex
     const heading = isFirst ? 'h1' : 'h2'
     const type = block._type
     const background = stegaClean(block.background as string | undefined) || 'white'
     const spacing = stegaClean(block.spacing as string | undefined) || 'default'
     const onDark = background === 'purple'
     const contained = type === 'heroSlider' && stegaClean(block.width as string | undefined) === 'contained'
+
+    // Homepage blocks draw their own background and spacing
+    if (HOMEPAGE_BLOCK_TYPES.has(type)) {
+      return {
+        key: block._key,
+        id: stegaClean(block.anchorId as string | undefined) || undefined,
+        className: `section section--${type} section--hp`,
+        bg: undefined,
+        spacing: 'none',
+        content: <HomepageBlock block={block} />,
+      }
+    }
 
     let content: React.ReactNode
     switch (type) {
